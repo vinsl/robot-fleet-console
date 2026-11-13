@@ -1,0 +1,203 @@
+{
+  "title": "Site configuration",
+  "tabs": {
+    "label": "Site sections",
+    "editor": "Editor",
+    "versions": "Versions"
+  },
+  "map": {
+    "legendLabel": "Map legend",
+    "legend": {
+      "wall": "Wall",
+      "obstacle": "Obstacle",
+      "nogo": "No-go zone",
+      "charger": "Charger",
+      "workstation": "Workstation"
+    }
+  },
+  "pick": {
+    "title": "Choose the drawing",
+    "hint": "Pick a DXF file exported from your CAD tool. It is read in this browser and never uploaded.",
+    "choose": "Choose a DXF file",
+    "drop": "or drop it here",
+    "parsing": "Reading the drawing",
+    "parsed": "Drawing read",
+    "size": "{{kb}} KB"
+  },
+  "errors": {
+    "dxf": {
+      "too-large": "This file is larger than {{limitMb}} MB.",
+      "binary": "This is a binary DXF file. Export it as ASCII DXF from your CAD tool.",
+      "not-dxf": "This file is not a DXF drawing.",
+      "wrong-type": "Choose a file with the .dxf extension.",
+      "too-complex": "This drawing is too complex to import.",
+      "empty": "The drawing has no entity the console can draw.",
+      "timeout": "Reading the drawing took too long. Try a simpler export."
+    },
+    "generic": "Something went wrong. Try again.",
+    "scale": "Enter a scale greater than zero.",
+    "extent": "The plan is larger than {{limitM}} m on one axis. Check the metres per unit.",
+    "save": {
+      "build": "The plan does not pass the map check yet. Review the features.",
+      "slot": "The console could not reserve a version. Try again.",
+      "validate": "The uploaded map could not be validated. Try again."
+    },
+    "upload": {
+      "too-large": "The map is larger than {{limitMb}} MB.",
+      "rejected": "The upload was refused, possibly because it expired. Save again.",
+      "network": "The upload failed on the network. Save again.",
+      "timeout": "The upload took too long. Save again."
+    }
+  },
+  "mapping": {
+    "title": "Map the layers",
+    "layer": "Layer",
+    "entities": "Entities",
+    "role": "Role",
+    "suggested": "suggested",
+    "scale": "Metres per unit",
+    "scaleHint": "The drawing unit is {{unit}}. Change the value only if the plan is not to scale.",
+    "scaleMissing": "The drawing gives no unit. Enter how many metres one drawing unit is.",
+    "roles": {
+      "wall": "Wall",
+      "obstacle": "Obstacle",
+      "ignore": "Ignore"
+    },
+    "units": {
+      "1": "inch",
+      "2": "foot",
+      "4": "millimetre",
+      "5": "centimetre",
+      "6": "metre",
+      "7": "kilometre",
+      "10": "yard",
+      "14": "decimetre"
+    },
+    "summary": "{{walls}} wall lines, {{obstacles}} obstacles, {{skipped}} open lines skipped as obstacles.",
+    "preview": "Preview of the walls and obstacles",
+    "continue": "Continue to the editor",
+    "back": "Back",
+    "layersLabel": "Drawing layers"
+  },
+  "edit": {
+    "title": "Place the features",
+    "toolsLabel": "Editor tools",
+    "mapLabel": "Plan being edited",
+    "tools": {
+      "select": "Select",
+      "charger": "Charger",
+      "workstation": "Workstation",
+      "nogo": "No-go zone"
+    },
+    "hint": "Click the plan to place the selected tool. Drag a feature to move it, or use the arrow keys with Shift for one metre. V, C, W and N select a tool; Delete removes the selected feature.",
+    "panel": {
+      "title": "Features",
+      "addCharger": "Place charger",
+      "addWorkstation": "Add workstation",
+      "addNogo": "Add no-go zone",
+      "remove": "Remove",
+      "name": "Name",
+      "workstation": "Workstation {{number}}",
+      "nogo": "No-go zone {{number}}",
+      "charger": "Charger",
+      "x": "x (m)",
+      "y": "y (m)",
+      "w": "width (m)",
+      "h": "height (m)",
+      "empty": "Nothing placed yet.",
+      "sizeRange": "Enter a width and a height between {{min}} and {{max}} m."
+    },
+    "resizeHint": "Drag a handle to resize. Keyboard: Alt+Shift+Arrow resizes the selected item by 0.1 m; Escape cancels a drag.",
+    "issues": {
+      "title": "Before saving",
+      "noCharger": "Place the charger.",
+      "fewStations": "Add at least two workstations.",
+      "badName": "Workstation {{number}}: use 1 to 32 lowercase letters, digits or hyphens.",
+      "duplicateName": "Workstation name {{name}} is used twice.",
+      "badSize": "Workstation {{name}} needs a width and a height between 0.1 and 50 m.",
+      "badNogo": "No-go zone {{number}} needs a width and a height above zero.",
+      "outside": {
+        "charger": "The charger is outside the plan.",
+        "workstation": "Workstation {{name}} is outside the plan.",
+        "nogo": "No-go zone {{number}} is outside the plan."
+      },
+      "complete": "The draft is complete.",
+      "protocolRefusal": "The plan does not pass the site map check yet. Review the features."
+    },
+    "back": "Back to the layers",
+    "item": "{{item}}, x {{x}} m, y {{y}} m",
+    "itemSized": "{{item}}, x {{x}} m, y {{y}} m, {{width}} by {{height}} m",
+    "save": "Save as new version",
+    "saving": "Saving the version",
+    "retryValidation": "Retry validation"
+  },
+  "discard": {
+    "title": "Discard the unsaved draft?",
+    "message": "The drawing and the features placed on it are not saved. Closing the sheet drops them.",
+    "keep": "Keep editing",
+    "confirm": "Discard draft"
+  },
+  "profile": {
+    "name": "Site name",
+    "save": "Save name",
+    "saving": "Saving the name",
+    "saved": "Site name saved.",
+    "saveFailed": "The name could not be saved. Try again.",
+    "loading": "Loading the site.",
+    "loadFailed": "The site could not be loaded. Try again.",
+    "active": "Active map: version {{version}}.",
+    "noActive": "No map is active yet.",
+    "invalidName": "Use 1 to {{max}} characters, without angle brackets or control characters."
+  },
+  "saved": {
+    "title": "Version {{version}} is validated",
+    "hint": "The map is stored and checked. Activate it to make the planner use it.",
+    "counts": "{{walls}} wall lines, {{workstations}} workstations, {{nogo}} no-go zones.",
+    "activate": "Activate now",
+    "activating": "Activating",
+    "activated": "Version {{version}} is now the active map.",
+    "activateConflict": "The map changed before activation. Refresh the versions and try again.",
+    "activateFailed": "The map could not be activated. Try again.",
+    "viewVersions": "View versions",
+    "editAnother": "Edit another drawing"
+  },
+  "versions": {
+    "title": "Map versions",
+    "loading": "Loading the versions.",
+    "loadingPreview": "Loading the map.",
+    "empty": "No map version yet. Save a drawing from the editor to create one.",
+    "none": "None",
+    "number": "v{{version}}",
+    "active": "Active",
+    "preview": "Map of version {{version}}",
+    "view": "View v{{version}}",
+    "validate": "Validate v{{version}}",
+    "validating": "Validating",
+    "activate": "Activate v{{version}}",
+    "confirmActivate": "Confirm activate v{{version}}",
+    "cancelActivate": "Cancel",
+    "activated": "Version {{version}} is now the active map.",
+    "download": "Download v{{version}}",
+    "counts": "{{walls}} wall lines, {{workstations}} workstations, {{nogo}} no-go zones.",
+    "status": {
+      "PENDING": "Pending",
+      "VALID": "Validated"
+    },
+    "col": {
+      "version": "Version",
+      "status": "Status",
+      "created": "Created",
+      "createdBy": "Created by",
+      "size": "Size",
+      "counts": "Features",
+      "actions": "Actions"
+    },
+    "errors": {
+      "load": "The versions could not be loaded. Try again.",
+      "validate": "The version could not be validated. Try again.",
+      "download": "The download could not start. Try again.",
+      "activateConflict": "The map changed before activation. Refresh the versions and try again.",
+      "activateFailed": "The map could not be activated. Try again."
+    }
+  }
+}

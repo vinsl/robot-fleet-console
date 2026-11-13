@@ -1,0 +1,179 @@
+/* Audit sheet body. Every value is a token from tokens.css. */
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-inner);
+}
+
+.scroll:focus-visible {
+  outline: var(--hairline) solid var(--focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--hairline) solid var(--glass-edge);
+  vertical-align: top;
+}
+
+.table th {
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.result {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.icon {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.mono {
+  font-family: var(--typeface-mono);
+  font-size: var(--text-xs);
+  word-break: break-all;
+}
+
+.button {
+  min-height: var(--control-h);
+  margin-top: var(--space-3);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:disabled {
+  cursor: progress;
+  opacity: var(--opacity-stale);
+}
+
+.failure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--state-estop);
+}
+
+/* Filter bar. A fieldset is reset to a plain box, so the layout is the flex row below and not the browser default. */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  border: 0;
+  font-size: var(--text-sm);
+}
+
+.legend {
+  padding: 0;
+  margin-right: var(--space-2);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.select {
+  min-height: var(--control-h);
+  padding: 0 var(--space-2);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--glass-fill);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.toggles {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.groupLabel {
+  color: var(--text-secondary);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* The pressed state is a heavier border and weight as well as aria-pressed, so it never depends on colour. */
+.toggle[aria-pressed="true"] {
+  border-color: var(--text-primary);
+  background: var(--glass-fill);
+  font-weight: var(--font-weight-medium);
+}
+
+.toggle:focus-visible,
+.select:focus-visible,
+.clear:focus-visible {
+  outline: var(--hairline) solid var(--focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.clear {
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.active {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* On a compact screen the bar wraps into a tighter column of rows, the same query as the other compact sheets (ADR 0075). */
+@media (max-width: 639px), (max-height: 500px) {
+  .filters {
+    gap: var(--space-2);
+  }
+
+  .select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}

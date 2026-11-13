@@ -1,0 +1,22 @@
+% Shared TikZ styles for the report figures: line styles stand for flow types, no colour.
+\definecolor{lightgrey}{HTML}{B9BBBF}
+\tikzset{
+  lab/.style={font=\fontsize{7}{8}\selectfont, text=ink, align=center, inner sep=1pt},
+  sub/.style={font=\fontsize{6}{7}\selectfont, text=secondary, align=center, inner sep=1pt},
+  flowT/.style={-{Stealth[length=1.7mm,width=1.3mm]}, line width=0.6pt, draw=ink},
+  flowC/.style={-{Stealth[length=1.7mm,width=1.3mm]}, line width=0.6pt, draw=ink, dash pattern=on 3pt off 2pt},
+  flowV/.style={line width=0.8pt, draw=ink, dash pattern=on 0.2pt off 2.2pt, line cap=round},
+  flowD/.style={-{Stealth[length=1.7mm,width=1.3mm]}, line width=0.6pt, draw=lightgrey},
+  flowJ/.style={-{Stealth[length=1.5mm,width=1.1mm]}, line width=0.4pt, draw=ink},
+  lane/.style={draw=hairline, line width=0.4pt, rounded corners=2mm},
+}
+\providecommand{\mk}[1]{node[circle, fill=ink, text=white, inner sep=0.7pt, minimum size=3.1mm, font=\fontsize{6}{6}\selectfont\bfseries, midway]{#1}}
+\providecommand{\ico}[4]{%
+  \node[inner sep=0] (#1) at (#2) {\includegraphics[height=7mm]{icons/#3.pdf}};
+  \node[lab, below=0pt of #1] (#1l) {#4};}
+\providecommand{\icoa}[4]{%
+  \node[inner sep=0] (#1) at (#2) {\includegraphics[height=7mm]{icons/#3.pdf}};
+  \node[lab, above=0pt of #1] (#1l) {#4};}
+\providecommand{\icow}[4]{%
+  \node[inner sep=0] (#1) at (#2) {\includegraphics[height=7mm]{icons/#3.pdf}};
+  \node[lab, left=1pt of #1] (#1l) {#4};}

@@ -1,0 +1,30 @@
+/* Column of the robot panel. The panel scrolls as a whole, so the e-stop stays reachable on a small screen. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* The identifier is the large number of the panel (DESIGN 4.2). */
+.id {
+  margin: 0;
+  font-size: var(--number);
+  letter-spacing: var(--tracking-number);
+  font-family: var(--typeface-mono);
+  font-weight: var(--font-weight-medium);
+}
+
+.muted {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}

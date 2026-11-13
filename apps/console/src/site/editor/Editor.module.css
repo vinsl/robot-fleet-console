@@ -1,0 +1,327 @@
+/* Wizard and editor. Every value is a token from tokens.css; no colour, size or radius is written here. */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.error {
+  margin: 0;
+  color: var(--state-estop);
+  font-size: var(--text-base);
+}
+
+.status {
+  min-height: var(--control-h);
+  color: var(--text-secondary);
+}
+
+.status p {
+  margin: 0;
+}
+
+.dropZone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: calc(var(--control-h) * 3);
+  padding: var(--space-5);
+  border: var(--hairline) dashed var(--glass-edge);
+  border-radius: var(--radius-inner);
+}
+
+.icon {
+  width: var(--space-6);
+  height: var(--space-6);
+  color: var(--text-secondary);
+}
+
+.button,
+.primaryButton,
+.toolButton {
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: var(--font-weight-medium);
+}
+
+.button:disabled,
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-stale);
+}
+
+.button:focus-visible,
+.primaryButton:focus-visible,
+.toolButton:focus-visible,
+.scroll:focus-visible,
+.input:focus-visible,
+.select:focus-visible {
+  outline: var(--hairline) solid var(--focus-ring);
+  outline-offset: var(--hairline);
+}
+
+.toolButton[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: var(--font-weight-medium);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.scroll {
+  max-height: calc(var(--control-h) * 6);
+  overflow: auto;
+  border-radius: var(--radius-inner);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+.table th,
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--hairline) solid var(--glass-edge);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.layerName {
+  font-weight: var(--font-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.suggested {
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+.select,
+.input {
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--state-estop);
+}
+
+.scaleRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 12ch);
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.scaleRow .hint {
+  grid-column: 1 / -1;
+}
+
+.preview,
+.canvas {
+  margin: 0;
+}
+
+.preview {
+  max-width: calc(var(--sheet-max-w) / 2);
+}
+
+.editorGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--panel-w));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.panel,
+.issues {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-inner);
+}
+
+.rowSelected {
+  background: var(--glass-highlight);
+}
+
+.rowTitle {
+  flex-basis: 100%;
+  font-weight: var(--font-weight-medium);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.field .input {
+  width: 9ch;
+}
+
+.list {
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.legendRow {
+  margin-top: var(--space-2);
+}
+
+/* Interactive features of the plan. The focus ring and the selection are dashed outlines, not colour alone. */
+.background {
+  cursor: crosshair;
+}
+
+/*
+ * The pointer target is transparent and inflated to a minimum size on the screen, so its interior always receives the
+ * pointer, in every state. The visible outline is a separate shape of the real size, and it never receives events.
+ */
+.hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+  outline: none;
+}
+
+.hitSelected {
+  cursor: move;
+}
+
+.outline {
+  fill: none;
+  pointer-events: none;
+}
+
+.hit:focus-visible + .outline,
+.selected {
+  stroke: var(--focus-ring);
+  stroke-width: calc(var(--hairline) * 2);
+  stroke-dasharray: calc(var(--hairline) * 4);
+  vector-effect: non-scaling-stroke;
+}
+
+.drawing {
+  fill: var(--map-nogo-fill);
+  stroke: var(--map-nogo-line);
+  stroke-width: var(--hairline);
+  stroke-dasharray: calc(var(--hairline) * 4);
+  vector-effect: non-scaling-stroke;
+}
+
+/*
+ * Resize handles of the selected shape. The visible square has a ring, so it is a shape and not colour alone; the
+ * transparent square around it is the pointer target, and it is the only part that receives the pointer.
+ */
+.handle {
+  fill: var(--bg-base);
+  stroke: var(--focus-ring);
+  stroke-width: calc(var(--hairline) * 2);
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.handleHit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.cursorNwse {
+  cursor: nwse-resize;
+}
+
+.cursorNesw {
+  cursor: nesw-resize;
+}
+
+.cursorEw {
+  cursor: ew-resize;
+}
+
+.cursorNs {
+  cursor: ns-resize;
+}
+
+.rowError {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--state-estop);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 639px) {
+  .editorGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

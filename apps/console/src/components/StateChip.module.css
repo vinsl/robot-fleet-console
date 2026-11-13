@@ -1,0 +1,50 @@
+/* State chip: a pill with a shape glyph, the state icon and the label. Colours are set inline from the visuals. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.glyph {
+  display: inline-block;
+  flex: none;
+  width: var(--space-3);
+  height: var(--space-3);
+  border: var(--hairline) solid transparent;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.roundedSquare {
+  border-radius: var(--radius-inner);
+}
+
+.triangle {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.octagon {
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+}
+
+.dashed {
+  border-style: dashed;
+}
+
+.icon {
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.label {
+  font-weight: var(--font-weight-medium);
+}

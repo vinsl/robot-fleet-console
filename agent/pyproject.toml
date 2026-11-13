@@ -1,0 +1,68 @@
+[project]
+name = "fleet-agent"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pydantic==2.14.*",
+    "awsiotsdk==1.31.*",
+]
+
+[project.scripts]
+fleet-agent = "fleet_agent.cli:main"
+
+[dependency-groups]
+dev = [
+    "ruff==0.17.1",
+    "mypy==2.4.0",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    "jsonschema==4.26.*",
+    "ezdxf==1.4.*",
+]
+
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fleet_agent"]
+
+[tool.uv]
+# Supply-chain guard: only resolve distributions published at least 14 days ago.
+exclude-newer = "14 days"
+required-version = ">=0.13,<0.14"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "S", "N", "ANN", "D", "RUF", "SIM", "PT", "C4", "PTH"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D"]
+"tests/sim/test_drivers.py" = ["S311"]  # seeded draws in the mission tests; nothing here is a secret
+"tests/sim/test_scripts.py" = ["S603", "S607"]  # runs the repository scripts and stand-in binaries
+
+[tool.mypy]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --import-mode=importlib -m \"not live\""
+markers = ["live: needs AWS and a registered robot; never runs in CI"]
+
+[[tool.mypy.overrides]]
+# The AWS IoT SDK and its CRT binding ship no type information (no py.typed).
+module = ["awscrt", "awscrt.*", "awsiot", "awsiot.*"]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+branch = true
+source = ["fleet_agent"]
+
+[tool.coverage.report]
+fail_under = 80

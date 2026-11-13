@@ -1,0 +1,16 @@
+{
+  "banner": "DEMO MODE",
+  "detail": "Simulated faults are audited",
+  "toggle": "Demo mode",
+  "on": "On",
+  "off": "Off",
+  "confirm": {
+    "enable": "Turn demo mode on? Simulated faults can then be injected, and each one is audited.",
+    "disable": "Turn demo mode off? Simulated faults are refused from now on.",
+    "ok": "Confirm",
+    "cancel": "Cancel"
+  },
+  "error": {
+    "update": "The demo mode could not be changed. Try again."
+  }
+}

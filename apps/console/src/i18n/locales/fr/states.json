@@ -1,0 +1,39 @@
+{
+  "state": {
+    "moving": "En route",
+    "working": "En mission",
+    "idle": "Disponible",
+    "charging": "En charge",
+    "paused": "En pause",
+    "teleop": "Téléopéré",
+    "blocked": "Bloqué",
+    "estop": "Arrêt d'urgence",
+    "offline": "Hors ligne"
+  },
+  "badge": {
+    "lowBattery": "Batterie faible",
+    "sensorFault": "Panne capteur",
+    "lockMine": "Contrôle : toi",
+    "lockOther": "{{name}} contrôle",
+    "camera": "Direct",
+    "stale": "il y a {{seconds}} s",
+    "simulated": "Simulé"
+  },
+  "alert": {
+    "critical": "Critique",
+    "major": "Majeure",
+    "minor": "Mineure",
+    "info": "Info",
+    "resolved": "Résolue"
+  },
+  "command": {
+    "pending": "{{command}} · envoi…",
+    "ack": "{{command}} · {{latency}} ms",
+    "reject": "{{command}} · {{reason}}"
+  },
+  "connection": {
+    "live": "Temps réel",
+    "reconnecting": "Reconnexion…",
+    "offline": "Hors ligne"
+  }
+}

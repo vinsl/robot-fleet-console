@@ -1,0 +1,33 @@
+rules:
+  - id: no-token-in-web-storage
+    languages: [typescript]
+    severity: ERROR
+    message: Tokens must stay in memory (SEC-WEB-2). Do not store them in localStorage or sessionStorage.
+    patterns:
+      - pattern-either:
+          - pattern: localStorage.setItem($KEY, $VAL)
+          - pattern: sessionStorage.setItem($KEY, $VAL)
+      - metavariable-regex:
+          metavariable: $KEY
+          regex: (?i).*(token|jwt|credential|secret|session).*
+  - id: no-wildcard-iam-action
+    languages: [hcl]
+    severity: ERROR
+    message: IAM statements must not allow every action (SEC-IAM-1).
+    pattern-either:
+      - pattern: |
+          actions = ["*"]
+      - pattern: |
+          Action = "*"
+  - id: no-dangerously-set-inner-html
+    languages: [typescript]
+    severity: ERROR
+    message: dangerouslySetInnerHTML is forbidden; render SVG from GeoJSON with React elements.
+    pattern: <$EL dangerouslySetInnerHTML={...} />
+  - id: no-console-log-in-lambda
+    languages: [typescript]
+    severity: WARNING
+    message: Use the Powertools logger so logs are structured and carry the correlation id.
+    paths:
+      include: [services/]
+    pattern: console.log(...)

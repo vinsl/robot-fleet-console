@@ -1,0 +1,79 @@
+{
+  "panel": {
+    "noData": "Aucune donnée pour l'instant",
+    "socketDown": "En attente de la liaison temps réel",
+    "commands": "Commandes",
+    "log": "Journal des commandes",
+    "timeline": "Historique d'état (10 min)"
+  },
+  "readouts": {
+    "name": "Nom",
+    "speed": "Vitesse",
+    "speedValue": "{{value}} m/s",
+    "battery": "Batterie",
+    "batteryValue": "{{value}} %",
+    "latency": "Dernier aller-retour",
+    "latencyValue": "{{ms}} ms",
+    "position": "Position",
+    "positionValue": "x {{x}} m · y {{y}} m",
+    "empty": "–"
+  },
+  "log": {
+    "empty": "Aucune commande pour l'instant"
+  },
+  "command": {
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "return_to_base": "Retour à la base",
+    "estop": "Arrêt d'urgence",
+    "estop_release": "Lever l'arrêt d'urgence",
+    "take_control": "Prendre le contrôle",
+    "release_control": "Rendre le contrôle",
+    "simulate_fault": "Simuler une panne"
+  },
+  "ack": {
+    "noAnswer": "Aucune réponse",
+    "alreadyApplied": "Déjà appliquée",
+    "failed": "Échec",
+    "reason": {
+      "EXPIRED": "expirée",
+      "DUPLICATE": "doublon",
+      "INVALID_STATE": "état invalide",
+      "NOT_LOCK_HOLDER": "pas le verrou",
+      "INVALID": "invalide",
+      "NOT_SIMULATED": "robot non simulé"
+    }
+  },
+  "lock": {
+    "mine": "Contrôle : toi",
+    "other": "{{label}} contrôle",
+    "free": "Personne ne contrôle",
+    "unknown": "État du contrôle inconnu",
+    "holder": "Opérateur {{id}}",
+    "takeHint": "Prendre le contrôle d'abord",
+    "linkLost": "Lien de contrôle perdu : le robot se met en pause dans 1 s"
+  },
+  "release": {
+    "title": "Lever l'arrêt d'urgence ?",
+    "body": "Le robot sort de l'arrêt d'urgence : il revient au repos s'il était au repos, sinon il reste en pause. Le contrôle est pris avant l'envoi.",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "fault": {
+    "select": "Panne",
+    "OBSTACLE": "Obstacle",
+    "SENSOR_FAULT": "Panne capteur",
+    "BATTERY_LOW": "Batterie faible",
+    "LINK_LOSS": "Perte de liaison"
+  },
+  "video": {
+    "label": "Caméra en direct",
+    "loading": "Connexion vidéo…",
+    "unavailable": "Vidéo indisponible",
+    "noCamera": "Pas de caméra",
+    "latency": "DIRECT · {{ms}} ms",
+    "live": "DIRECT",
+    "hideInfo": "Masquer les informations",
+    "showInfo": "Afficher les informations"
+  }
+}

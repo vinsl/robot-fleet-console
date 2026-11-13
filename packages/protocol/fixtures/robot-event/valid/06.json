@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "messageId": "0190a7c4-5b1e-7d2a-9c3f-4e5d6a7b8c9d",
+  "robotId": "kali-01",
+  "siteId": "paris-01",
+  "ts": "2026-11-01T10:00:00.000Z",
+  "seq": 42,
+  "bootId": "0190a7c4-0000-7000-8000-000000000001",
+  "kind": "LOCK_CHANGED",
+  "held": true,
+  "holder": "7f3e2a10-9b4c-4d5e-8f60-1a2b3c4d5e6f",
+  "cause": "ACQUIRED"
+}

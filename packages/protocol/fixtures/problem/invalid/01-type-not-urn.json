@@ -1,0 +1,6 @@
+{
+  "type": "https://example.com/problem",
+  "title": "Robot already exists",
+  "status": 409,
+  "correlationId": "corr-0001-abcd"
+}

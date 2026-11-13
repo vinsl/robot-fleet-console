@@ -1,0 +1,14 @@
+% Safety strip, narrowed so that the OWASP ZAP table can sit to its right.
+% Both paths go through the control Lambda; the E-STOP one skips the lock check (ADR 0062).
+\begin{tikzpicture}[x=0.62cm,y=1cm]
+  \ico{op}{1.0,0.55}{Res_Users}{Opérateur}
+  \ico{ctl}{6.2,0.55}{AWS-Lambda}{control}
+  \node[sub, below=0pt of ctll] {garde le jeton de verrou};
+  \ico{iot}{11.4,0.55}{AWS-IoT-Core}{IoT Core}
+  \ico{rob}{16.6,0.55}{Res_IoT_Thing_Generic}{Robot}
+  \node[sub, below=0pt of robl] {deadman 1 s → PAUSED};
+  \draw[flowC] (op.east) -- node[above, sub]{commande · verrou requis} (ctl.west);
+  \draw[flowC] (ctl.east) -- (iot.west);
+  \draw[flowC] (iot.east) -- (rob.west);
+  \draw[flowC, line width=1pt] (op.north) -- (1.0,1.45) -- node[above, lab, fill=white, inner sep=1.5pt]{\bfseries E-STOP · prioritaire, sans verrou\\\mdseries verrouillé jusqu'à libération} (6.2,1.45) -- (ctl.north);
+\end{tikzpicture}

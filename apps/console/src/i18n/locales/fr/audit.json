@@ -1,0 +1,76 @@
+{
+  "title": "Journal d'audit",
+  "loading": "Chargement du journal d'audit…",
+  "empty": "Aucune action auditée pour l'instant.",
+  "loadMore": "Charger la suite",
+  "retry": "Réessayer",
+  "noRobot": "—",
+  "filter": {
+    "legend": "Filtrer les enregistrements",
+    "robot": "Robot",
+    "allRobots": "Tous les robots",
+    "result": "Résultat",
+    "allResults": "Tous",
+    "clear": "Effacer les filtres",
+    "active": "Affichage : {{robot}}, {{result}}",
+    "noneYet": "Aucun enregistrement correspondant parmi ceux déjà lus.",
+    "none": "Aucun enregistrement ne correspond à ces filtres.",
+    "searchOlder": "Rechercher des enregistrements plus anciens"
+  },
+  "error": {
+    "load": "Le journal d'audit n'a pas pu être chargé."
+  },
+  "table": {
+    "name": "Actions auditées"
+  },
+  "actorLabel": {
+    "admin": "Outil d'administration"
+  },
+  "column": {
+    "time": "Heure",
+    "who": "Qui",
+    "action": "Action",
+    "robot": "Robot",
+    "result": "Résultat",
+    "correlationId": "ID de corrélation"
+  },
+  "result": {
+    "SUCCEEDED": "Réussi",
+    "REFUSED": "Refusé",
+    "FAILED": "Échec"
+  },
+  "action": {
+    "robots": {
+      "register": "Enregistrer le robot",
+      "retire": "Retirer le robot"
+    },
+    "site": {
+      "update": "Mettre à jour le site",
+      "map": {
+        "create": "Créer la carte",
+        "validate": "Valider la carte",
+        "activate": "Activer la carte"
+      }
+    },
+    "alert": {
+      "acknowledge": "Acquitter l'alerte",
+      "resolve": "Résoudre l'alerte"
+    },
+    "lock": {
+      "acquire": "Prendre le contrôle",
+      "release": "Rendre le contrôle"
+    },
+    "command": {
+      "pause": "Pause",
+      "resume": "Reprendre",
+      "return_to_base": "Retour à la base",
+      "estop": "Arrêt d'urgence",
+      "estop_release": "Lever l'arrêt d'urgence",
+      "simulate_fault": "Simuler une panne"
+    },
+    "demo": {
+      "enable": "Activer le mode démo",
+      "disable": "Désactiver le mode démo"
+    }
+  }
+}

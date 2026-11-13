@@ -1,0 +1,54 @@
+/* KPI corners over the map. Compact screens hide them: the KPI page of the dock carries the numbers. */
+.corners {
+  position: absolute;
+  inset: auto var(--space-4) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: var(--z-panel);
+}
+
+.corner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-primary);
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.left {
+  align-items: flex-start;
+}
+
+.right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.label {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/*
+ * A value such as "No data yet" stays on one line: wrapping it would make the corner grow upwards into the map
+ * controls' area. The corners are sized by their content, so a single line always fits the desktop widths.
+ */
+.value {
+  font-family: var(--typeface-mono);
+  font-size: var(--number-lg);
+  letter-spacing: var(--tracking-number);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media (max-width: 639px), (max-height: 500px) {
+  .corners {
+    display: none;
+  }
+}

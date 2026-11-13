@@ -1,0 +1,20 @@
+/* Full-screen grid: status line, map stage, dock. The stage is the only row that grows. */
+.shell {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--bg-gradient);
+}
+
+/* The demo banner and the status line share the first grid row, one above the other. */
+.top {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stage {
+  position: relative;
+  min-height: 0;
+}

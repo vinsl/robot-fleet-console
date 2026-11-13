@@ -1,0 +1,20 @@
+# Generated or lock files are produced by tools and must not be reformatted by hand.
+pnpm-lock.yaml
+**/dist/
+**/coverage/
+packages/protocol/generated/
+services/api/openapi.json
+# Byte-for-byte vendored release, pinned by SHA-256 (ADR 0026): never reformatted.
+apps/robot-video/public/vendor/
+# The console's copy of the same vendored release (ADR 0026, ADR 0067): byte for byte, never reformatted.
+apps/console/public/vendor/
+
+# Non-TypeScript or non-owned content.
+.claude/
+CLAUDE.md
+docs/report/
+agent/
+agent/.venv/
+
+# Frozen design mock-ups, kept byte-for-byte as validated
+docs/design/references/

@@ -1,0 +1,16 @@
+{
+  "banner": "MODE DÉMO",
+  "detail": "Les pannes simulées sont auditées",
+  "toggle": "Mode démo",
+  "on": "Activé",
+  "off": "Désactivé",
+  "confirm": {
+    "enable": "Activer le mode démo ? Des pannes simulées pourront alors être injectées, et chacune sera auditée.",
+    "disable": "Désactiver le mode démo ? Les pannes simulées seront refusées à partir de maintenant.",
+    "ok": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "error": {
+    "update": "Le mode démo n'a pas pu être modifié. Réessayez."
+  }
+}

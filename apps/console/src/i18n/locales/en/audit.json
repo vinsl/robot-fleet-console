@@ -1,0 +1,76 @@
+{
+  "title": "Audit trail",
+  "loading": "Loading the audit trail…",
+  "empty": "No audited action yet.",
+  "loadMore": "Load more",
+  "retry": "Retry",
+  "noRobot": "—",
+  "filter": {
+    "legend": "Filter the records",
+    "robot": "Robot",
+    "allRobots": "All robots",
+    "result": "Result",
+    "allResults": "All",
+    "clear": "Clear filters",
+    "active": "Showing: {{robot}}, {{result}}",
+    "noneYet": "No matching record in the records read so far.",
+    "none": "No record matches these filters.",
+    "searchOlder": "Search older records"
+  },
+  "error": {
+    "load": "The audit trail could not be loaded."
+  },
+  "table": {
+    "name": "Audited actions"
+  },
+  "actorLabel": {
+    "admin": "Admin tool"
+  },
+  "column": {
+    "time": "Time",
+    "who": "Who",
+    "action": "Action",
+    "robot": "Robot",
+    "result": "Result",
+    "correlationId": "Correlation ID"
+  },
+  "result": {
+    "SUCCEEDED": "Succeeded",
+    "REFUSED": "Refused",
+    "FAILED": "Failed"
+  },
+  "action": {
+    "robots": {
+      "register": "Register robot",
+      "retire": "Retire robot"
+    },
+    "site": {
+      "update": "Update site",
+      "map": {
+        "create": "Create map",
+        "validate": "Validate map",
+        "activate": "Activate map"
+      }
+    },
+    "alert": {
+      "acknowledge": "Acknowledge alert",
+      "resolve": "Resolve alert"
+    },
+    "lock": {
+      "acquire": "Take control",
+      "release": "Release control"
+    },
+    "command": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "return_to_base": "Return to base",
+      "estop": "E-stop",
+      "estop_release": "Release e-stop",
+      "simulate_fault": "Simulate fault"
+    },
+    "demo": {
+      "enable": "Enable demo mode",
+      "disable": "Disable demo mode"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+/* Right-hand glass panel. Widths and spacing come from tokens.css. */
+.panel {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+  width: var(--panel-w);
+  max-width: calc(100% - var(--space-5) * 2);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-surface);
+  padding: var(--space-5);
+  z-index: var(--z-panel);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  min-width: var(--control-h);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: pointer;
+}
+
+.icon {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.body {
+  margin-top: var(--space-4);
+  overflow: auto;
+}
+
+/* Widened panel: most of the screen, still capped by the viewport through max-width. */
+.expanded {
+  width: var(--panel-w-expanded);
+}
+
+/* Tab on the left edge of the panel; it sits inside the panel because the panel clips its overflow. */
+.expand {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  min-width: var(--space-5);
+  padding: 0;
+  border: var(--hairline) solid var(--glass-edge);
+  border-left: 0;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: var(--glass-fill);
+  color: var(--text-primary);
+  cursor: pointer;
+}

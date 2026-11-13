@@ -1,0 +1,2441 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Fleet Console API",
+    "version": "0.0.0",
+    "description": "Generated from packages/protocol."
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Liveness report. Public, no authentication.",
+        "responses": {
+          "200": {
+            "description": "The service is up.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "operationId": "getMe",
+        "summary": "Identity of the caller.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The caller.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The token does not grant a console role.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws-token": {
+      "post": {
+        "operationId": "postWsToken",
+        "summary": "Issue a single-use token for one WebSocket connection.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WsTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The token and the WebSocket URL.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WsTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema, or the session window is invalid.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no access to the requested site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 16 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/alerts": {
+      "get": {
+        "operationId": "listAlerts",
+        "summary": "List the active or resolved alerts of a site, one page per request.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Open alerts (active) or alerts resolved in the window (resolved).",
+            "schema": {
+              "default": "active",
+              "type": "string",
+              "enum": [
+                "active",
+                "resolved"
+              ]
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "required": false,
+            "description": "Severity filter.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CRITICAL",
+                "MAJOR",
+                "MINOR",
+                "INFO"
+              ]
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "query",
+            "required": false,
+            "description": "Robot filter.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "description": "Earliest resolution time. Only with status=resolved.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size, from 1 to 100.",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Cursor of the next page.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,512}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of alerts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter does not match the schema, or the cursor is not valid.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no console role, or no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/alerts/{alertId}/acknowledge": {
+      "post": {
+        "operationId": "acknowledgeAlert",
+        "summary": "Acknowledge an open alert.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "alertId",
+            "in": "path",
+            "required": true,
+            "description": "Alert identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The alert after the action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller may not change alerts, or has no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No alert matches the identifier and the opening time.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The alert is not in a state that allows this action.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 16 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/alerts/{alertId}/resolve": {
+      "post": {
+        "operationId": "resolveAlert",
+        "summary": "Resolve an acknowledged alert.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "alertId",
+            "in": "path",
+            "required": true,
+            "description": "Alert identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The alert after the action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller may not change alerts, or has no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No alert matches the identifier and the opening time.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The alert is not in a state that allows this action.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 16 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/robots": {
+      "get": {
+        "operationId": "listRobots",
+        "summary": "List the robots of a site, as summaries only.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The registry entries of the site.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobotListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no console role, or no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/robots/{robotId}/commands": {
+      "post": {
+        "operationId": "sendCommand",
+        "summary": "Send one command to a robot. Admin and Operator only; SIMULATE_FAULT is Admin only.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "path",
+            "required": true,
+            "description": "Robot identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The command was accepted, or it was already accepted and is returned again (deduplicated).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema of its command type.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller may not send this command to this site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The robot is not in the registry of the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The command does not fit the current state: no lock held, another holder, demo mode off, robot not simulated, robot retired, or the command identifier was used for another command.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 2 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The caller sent too many commands in the window. E-stop is never limited.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The command could not be published. The same command identifier may be sent again.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The request ran out of time before the command was published. Nothing was published.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/robots/{robotId}/lock": {
+      "get": {
+        "operationId": "getLock",
+        "summary": "State of the robot lock as the caller sees it. The token is never returned.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "path",
+            "required": true,
+            "description": "Robot identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The state of the lock.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockState"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no console role, or no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "acquireLock",
+        "summary": "Take control of a robot. Admin and Operator only.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "path",
+            "required": true,
+            "description": "Robot identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The lock is held by the caller.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller may not take control, or has no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The robot is not in the registry of the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Another operator holds the lock, or the robot is retired.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 2 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The take-control command could not be published. The lock was not kept.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/robots/{robotId}/lock/release": {
+      "post": {
+        "operationId": "releaseLock",
+        "summary": "Release the lock the caller holds.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "path",
+            "required": true,
+            "description": "Robot identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The lock is released, or was already free (changed is false).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller may not release control, or has no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The robot is not in the registry of the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Another operator holds the lock.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 2 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The release command could not be published. The lock is kept so the release can be retried.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/demo": {
+      "get": {
+        "operationId": "getDemo",
+        "summary": "Demo mode of a site. Every console role may read it.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The demo mode of the site.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoState"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no console role, or no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "setDemo",
+        "summary": "Switch the demo mode of a site. Admin only.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The demo mode after the change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body does not match the schema.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller is not an Admin, or has no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body is larger than 2 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/{siteId}/audit": {
+      "get": {
+        "operationId": "listAudit",
+        "summary": "List the audit records of a site, newest first, one page per request.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "description": "Site identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size, from 1 to 100.",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Cursor of the next page.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,512}$"
+            }
+          },
+          {
+            "name": "robotId",
+            "in": "query",
+            "required": false,
+            "description": "Only the records of this robot.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            }
+          },
+          {
+            "name": "result",
+            "in": "query",
+            "required": false,
+            "description": "Only the records with this outcome.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SUCCEEDED",
+                "REFUSED",
+                "FAILED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of audit records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter does not match the schema, or the cursor is not valid.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token (answered by API Gateway)."
+          },
+          "403": {
+            "description": "The caller has no console role, or no access to the site.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "status",
+          "version",
+          "time"
+        ],
+        "additionalProperties": false
+      },
+      "Me": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Admin",
+              "Operator",
+              "Viewer"
+            ]
+          },
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          }
+        },
+        "required": [
+          "userId",
+          "role",
+          "siteId"
+        ],
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^urn:mfc:problem:[a-z-]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "correlationId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{8,64}$"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "WsTokenRequest": {
+        "type": "object",
+        "properties": {
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          }
+        },
+        "required": [
+          "siteId"
+        ],
+        "additionalProperties": false
+      },
+      "WsTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "sessionExpiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^wss:\\/\\/[a-z0-9]+\\.execute-api\\.(eu-west-3|eu-west-1)\\.amazonaws\\.com\\/[a-z0-9-]{1,128}$"
+          }
+        },
+        "required": [
+          "token",
+          "expiresAt",
+          "sessionExpiresAt",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "AlertRecord": {
+        "type": "object",
+        "properties": {
+          "alertId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "robotId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ESTOP",
+              "BLOCKED",
+              "OFFLINE",
+              "LOW_BATTERY"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "MAJOR",
+              "MINOR",
+              "INFO"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "ACKNOWLEDGED",
+              "RESOLVED"
+            ]
+          },
+          "openedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "cause": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_:]{1,64}$"
+          },
+          "sourceMessageId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "acknowledgedBy": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "acknowledgedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "resolvedBy": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "resolvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "alertId",
+          "siteId",
+          "robotId",
+          "kind",
+          "severity",
+          "status",
+          "openedAt"
+        ],
+        "additionalProperties": false
+      },
+      "AlertListResponse": {
+        "type": "object",
+        "properties": {
+          "alerts": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "alertId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "ESTOP",
+                    "BLOCKED",
+                    "OFFLINE",
+                    "LOW_BATTERY"
+                  ]
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "CRITICAL",
+                    "MAJOR",
+                    "MINOR",
+                    "INFO"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "OPEN",
+                    "ACKNOWLEDGED",
+                    "RESOLVED"
+                  ]
+                },
+                "openedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "cause": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_:]{1,64}$"
+                },
+                "sourceMessageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "acknowledgedBy": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{1,128}$"
+                },
+                "acknowledgedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "resolvedBy": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{1,128}$"
+                },
+                "resolvedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                }
+              },
+              "required": [
+                "alertId",
+                "siteId",
+                "robotId",
+                "kind",
+                "severity",
+                "status",
+                "openedAt"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,512}$"
+          }
+        },
+        "required": [
+          "alerts"
+        ],
+        "additionalProperties": false
+      },
+      "AlertActionRequest": {
+        "type": "object",
+        "properties": {
+          "openedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "openedAt"
+        ],
+        "additionalProperties": false
+      },
+      "AlertActionResponse": {
+        "type": "object",
+        "properties": {
+          "alert": {
+            "type": "object",
+            "properties": {
+              "alertId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              "siteId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "robotId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "ESTOP",
+                  "BLOCKED",
+                  "OFFLINE",
+                  "LOW_BATTERY"
+                ]
+              },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "CRITICAL",
+                  "MAJOR",
+                  "MINOR",
+                  "INFO"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "OPEN",
+                  "ACKNOWLEDGED",
+                  "RESOLVED"
+                ]
+              },
+              "openedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              },
+              "cause": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_:]{1,64}$"
+              },
+              "sourceMessageId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "acknowledgedBy": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9-]{1,128}$"
+              },
+              "acknowledgedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              },
+              "resolvedBy": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9-]{1,128}$"
+              },
+              "resolvedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              }
+            },
+            "required": [
+              "alertId",
+              "siteId",
+              "robotId",
+              "kind",
+              "severity",
+              "status",
+              "openedAt"
+            ],
+            "additionalProperties": false
+          },
+          "changed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "alert",
+          "changed"
+        ],
+        "additionalProperties": false
+      },
+      "AuditRecord": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "robotId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "alertId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "actor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._+-]{1,64}$"
+          },
+          "actorSource": {
+            "type": "string",
+            "enum": [
+              "mfc.admin",
+              "mfc.jwt"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "robots.register",
+              "robots.retire",
+              "site.update",
+              "site.map.create",
+              "site.map.validate",
+              "site.map.activate",
+              "alert.acknowledge",
+              "alert.resolve",
+              "lock.acquire",
+              "lock.release",
+              "command.pause",
+              "command.resume",
+              "command.return_to_base",
+              "command.estop",
+              "command.estop_release",
+              "command.simulate_fault",
+              "demo.enable",
+              "demo.disable"
+            ]
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "SUCCEEDED",
+              "REFUSED",
+              "FAILED"
+            ]
+          },
+          "problemType": {
+            "type": "string",
+            "enum": [
+              "invalid-request",
+              "robot-exists",
+              "robot-not-found",
+              "robot-state-conflict",
+              "provisioning-failed",
+              "retirement-failed",
+              "unauthorized",
+              "forbidden",
+              "not-found",
+              "payload-too-large",
+              "rate-limited",
+              "map-not-found",
+              "map-invalid",
+              "version-limit",
+              "alert-not-found",
+              "alert-state-conflict",
+              "lock-held",
+              "lock-not-held",
+              "command-conflict",
+              "demo-mode-off",
+              "not-simulated",
+              "upstream-failed",
+              "internal"
+            ]
+          },
+          "mapVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999999
+          },
+          "correlationId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{8,64}$"
+          }
+        },
+        "required": [
+          "auditId",
+          "ts",
+          "siteId",
+          "actor",
+          "actorSource",
+          "action",
+          "result",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "AuditListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "auditId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "alertId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "commandId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "actor": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9._+-]{1,64}$"
+                },
+                "actorSource": {
+                  "type": "string",
+                  "enum": [
+                    "mfc.admin",
+                    "mfc.jwt"
+                  ]
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "robots.register",
+                    "robots.retire",
+                    "site.update",
+                    "site.map.create",
+                    "site.map.validate",
+                    "site.map.activate",
+                    "alert.acknowledge",
+                    "alert.resolve",
+                    "lock.acquire",
+                    "lock.release",
+                    "command.pause",
+                    "command.resume",
+                    "command.return_to_base",
+                    "command.estop",
+                    "command.estop_release",
+                    "command.simulate_fault",
+                    "demo.enable",
+                    "demo.disable"
+                  ]
+                },
+                "result": {
+                  "type": "string",
+                  "enum": [
+                    "SUCCEEDED",
+                    "REFUSED",
+                    "FAILED"
+                  ]
+                },
+                "problemType": {
+                  "type": "string",
+                  "enum": [
+                    "invalid-request",
+                    "robot-exists",
+                    "robot-not-found",
+                    "robot-state-conflict",
+                    "provisioning-failed",
+                    "retirement-failed",
+                    "unauthorized",
+                    "forbidden",
+                    "not-found",
+                    "payload-too-large",
+                    "rate-limited",
+                    "map-not-found",
+                    "map-invalid",
+                    "version-limit",
+                    "alert-not-found",
+                    "alert-state-conflict",
+                    "lock-held",
+                    "lock-not-held",
+                    "command-conflict",
+                    "demo-mode-off",
+                    "not-simulated",
+                    "upstream-failed",
+                    "internal"
+                  ]
+                },
+                "mapVersion": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 999999
+                },
+                "correlationId": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{8,64}$"
+                }
+              },
+              "required": [
+                "auditId",
+                "ts",
+                "siteId",
+                "actor",
+                "actorSource",
+                "action",
+                "result",
+                "correlationId"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,512}$"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "CommandRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "PAUSE"
+              }
+            },
+            "required": [
+              "commandId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "RESUME"
+              }
+            },
+            "required": [
+              "commandId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "RETURN_TO_BASE"
+              }
+            },
+            "required": [
+              "commandId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "ESTOP"
+              }
+            },
+            "required": [
+              "commandId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "ESTOP_RELEASE"
+              }
+            },
+            "required": [
+              "commandId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "type": {
+                "type": "string",
+                "const": "SIMULATE_FAULT"
+              },
+              "params": {
+                "type": "object",
+                "properties": {
+                  "fault": {
+                    "type": "string",
+                    "enum": [
+                      "OBSTACLE",
+                      "SENSOR_FAULT",
+                      "BATTERY_LOW",
+                      "LINK_LOSS"
+                    ]
+                  },
+                  "durationS": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 300
+                  }
+                },
+                "required": [
+                  "fault"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "commandId",
+              "type",
+              "params"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "CommandResponse": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "correlationId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{8,64}$"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "deduplicated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "commandId",
+          "correlationId",
+          "issuedAt",
+          "deduplicated"
+        ],
+        "additionalProperties": false
+      },
+      "DemoState": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "changedBy": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "changedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "additionalProperties": false
+      },
+      "DemoUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "additionalProperties": false
+      },
+      "LockRequest": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          }
+        },
+        "required": [
+          "commandId"
+        ],
+        "additionalProperties": false
+      },
+      "LockState": {
+        "type": "object",
+        "properties": {
+          "robotId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "held": {
+            "type": "boolean"
+          },
+          "holder": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "mine": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "robotId",
+          "held",
+          "mine"
+        ],
+        "additionalProperties": false
+      },
+      "LockActionResponse": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "correlationId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{8,64}$"
+          },
+          "changed": {
+            "type": "boolean"
+          },
+          "lock": {
+            "type": "object",
+            "properties": {
+              "robotId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "held": {
+                "type": "boolean"
+              },
+              "holder": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9-]{1,128}$"
+              },
+              "mine": {
+                "type": "boolean"
+              },
+              "expiresAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              }
+            },
+            "required": [
+              "robotId",
+              "held",
+              "mine"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "commandId",
+          "correlationId",
+          "changed",
+          "lock"
+        ],
+        "additionalProperties": false
+      },
+      "RobotSummary": {
+        "type": "object",
+        "properties": {
+          "robotId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9À-ÖØ-öø-ÿ ._-]{1,64}$"
+          },
+          "type": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,32}$"
+          },
+          "designDate": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+          },
+          "simulated": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROVISIONING",
+              "ACTIVE",
+              "PROVISIONING_FAILED",
+              "RETIRING",
+              "RETIRED"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "retiredAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          }
+        },
+        "required": [
+          "robotId",
+          "siteId",
+          "name",
+          "type",
+          "designDate",
+          "simulated",
+          "status",
+          "createdAt"
+        ],
+        "additionalProperties": false
+      },
+      "RobotListResponse": {
+        "type": "object",
+        "properties": {
+          "robots": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "name": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9À-ÖØ-öø-ÿ ._-]{1,64}$"
+                },
+                "type": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{1,32}$"
+                },
+                "designDate": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                "simulated": {
+                  "type": "boolean"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "PROVISIONING",
+                    "ACTIVE",
+                    "PROVISIONING_FAILED",
+                    "RETIRING",
+                    "RETIRED"
+                  ]
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "retiredAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                }
+              },
+              "required": [
+                "robotId",
+                "siteId",
+                "name",
+                "type",
+                "designDate",
+                "simulated",
+                "status",
+                "createdAt"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "robots"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+/* KPI sheet: one group per time window, each a responsive grid of cards. Every value is a token from tokens.css. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Cards stay at least half the panel width, so two fit side by side on a wide screen. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--panel-w) / 2)), 1fr));
+  gap: var(--space-3);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+}
+
+.label,
+.groupTitle {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin: 0;
+  font-family: var(--typeface-mono);
+  font-size: var(--number);
+  letter-spacing: var(--tracking-number);
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+/* The two hero KPIs of the sheet, at the size of the KPI corners. */
+.hero {
+  font-size: var(--number-lg);
+}
+
+.unit {
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+}
+
+.hint,
+.partial {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.partial {
+  color: var(--text-primary);
+}
+
+/* Compact screens (ADR 0075): smaller hero numbers, padding and gaps, so the sheet fits a phone. */
+@media (max-width: 639px), (max-height: 500px) {
+  .hero {
+    font-size: var(--number);
+  }
+
+  .card {
+    padding: var(--space-3);
+  }
+
+  .cards {
+    gap: var(--space-2);
+  }
+}

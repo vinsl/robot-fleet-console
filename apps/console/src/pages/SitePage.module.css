@@ -1,0 +1,49 @@
+/* Tabs of the site sheet. Every value is a token from tokens.css. */
+.tablist {
+  display: flex;
+  gap: var(--space-2);
+  border-bottom: var(--hairline) solid var(--glass-edge);
+  padding-bottom: var(--space-2);
+}
+
+.tab {
+  min-height: var(--control-h);
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  padding-inline: var(--space-3);
+  cursor: pointer;
+}
+
+.tab:focus-visible {
+  outline: var(--hairline) solid var(--focus-ring);
+  outline-offset: var(--hairline);
+}
+
+.tabSelected {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Discard question of the sheet. Every value is a token from tokens.css. */
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  font-size: var(--text-base);
+}
+
+.confirmTitle {
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.confirmActions {
+  display: flex;
+  gap: var(--space-2);
+}

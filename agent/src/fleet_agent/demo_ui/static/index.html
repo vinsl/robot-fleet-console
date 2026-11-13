@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Fleet Console demo control</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+    <header class="page-header">
+      <h1 data-i18n="title">Fleet Console demo control</h1>
+      <p class="site">
+        <span data-i18n="siteLabel">Site</span>:
+        <span id="site-name" class="site-name">-</span>
+        <span class="read-only" data-i18n="readOnly">(read only)</span>
+      </p>
+    </header>
+
+    <main id="main">
+      <div id="error" class="banner banner-error" role="alert" hidden></div>
+      <div id="info" class="banner banner-info" role="status" hidden></div>
+
+      <section class="card" aria-labelledby="control-title">
+        <h2 id="control-title" data-i18n="controlTitle">Simulated fleet</h2>
+        <p class="state" aria-live="polite">
+          <span data-i18n="stateLabel">State</span>:
+          <span id="phase" class="chip">-</span>
+          <span id="step" class="step"></span>
+        </p>
+        <p aria-live="polite">
+          <span data-i18n="consumerLabel">Live data</span>:
+          <span id="consumer">-</span>
+          <span id="auto-stop"></span>
+        </p>
+        <p class="count-row">
+          <label for="count-input" data-i18n="countLabel">Simulated robots</label>
+          <input id="count-input" class="count-input" type="number" inputmode="numeric" min="1" max="20" step="1" value="9" />
+        </p>
+        <div class="actions">
+          <button type="button" id="start-button" class="button" data-i18n="start">Start</button>
+          <button type="button" id="stop-button" class="button button-secondary" data-i18n="stop">
+            Stop
+          </button>
+        </div>
+
+        <div id="console" class="console" hidden>
+          <label for="console-url" data-i18n="consoleLabel">Console address</label>
+          <div class="console-row">
+            <input id="console-url" class="console-url" type="text" readonly />
+            <button type="button" id="copy-button" class="button button-secondary" data-i18n="copy">
+              Copy
+            </button>
+            <button type="button" id="share-button" class="button button-secondary" hidden data-i18n="share">
+              Share
+            </button>
+          </div>
+          <p id="copy-status" class="sr-status" role="status"></p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="real-title">
+        <h2 id="real-title" data-i18n="realTitle">Real robot</h2>
+        <ul id="real-robots" class="plain-list"></ul>
+        <p id="real-hint" data-i18n="realHint">Start it on the Kali VM with make agent ROBOT=...</p>
+      </section>
+
+      <section class="card" aria-labelledby="robots-title">
+        <div class="heading-row">
+          <h2 id="robots-title" data-i18n="robotsTitle">Robots</h2>
+          <button type="button" id="refresh-button" class="button button-secondary" data-i18n="refresh">
+            Refresh
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption data-i18n="robotsCaption">Robots of the site</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="colId">Identifier</th>
+                <th scope="col" data-i18n="colName">Name</th>
+                <th scope="col" data-i18n="colKind">Kind</th>
+                <th scope="col" data-i18n="colRegistry">Registry</th>
+                <th scope="col" data-i18n="colConnection">Connection</th>
+                <th scope="col" data-i18n="colLastSeen">Last seen</th>
+              </tr>
+            </thead>
+            <tbody id="robots-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="users-title">
+        <h2 id="users-title" data-i18n="usersTitle">Operator accounts</h2>
+        <div class="table-wrap">
+          <table>
+            <caption data-i18n="usersCaption">Accounts of the user pool</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="colUser">User</th>
+                <th scope="col" data-i18n="colRole">Role</th>
+                <th scope="col" data-i18n="colStatus">Status</th>
+                <th scope="col" data-i18n="colEnabled">Enabled</th>
+              </tr>
+            </thead>
+            <tbody id="users-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="account-title">
+        <h2 id="account-title" data-i18n="accountTitle">Create or reset an account</h2>
+        <form id="account-form" class="account-form" autocomplete="off">
+          <p class="count-row">
+            <label for="account-email" data-i18n="accountEmail">E-mail</label>
+            <input id="account-email" class="field-input" name="email" type="email" autocomplete="off" spellcheck="false" maxlength="128" required />
+          </p>
+          <p class="count-row">
+            <label for="account-role" data-i18n="accountRole">Role</label>
+            <select id="account-role" class="field-input" name="role">
+              <option value="Operator" data-i18n="roleOperator">Operator</option>
+              <option value="Viewer" data-i18n="roleViewer">Viewer</option>
+            </select>
+          </p>
+          <p class="count-row">
+            <input id="account-reset" name="reset" type="checkbox" aria-describedby="account-reset-hint" />
+            <label for="account-reset" data-i18n="accountReset">Reset an existing account</label>
+          </p>
+          <p id="account-reset-hint" class="hint" data-i18n="accountResetHint">The account keeps its role. Its current password stops working and it gets a new temporary password.</p>
+          <div class="actions">
+            <button type="submit" id="account-submit" class="button" data-i18n="accountSubmit">Create account</button>
+          </div>
+        </form>
+
+        <div id="account-confirm" class="account-panel" hidden>
+          <p id="account-confirm-text"></p>
+          <div class="actions">
+            <button type="button" id="account-confirm-yes" class="button" data-i18n="accountConfirmYes">Reset</button>
+            <button type="button" id="account-confirm-no" class="button button-secondary" data-i18n="accountCancel">Cancel</button>
+          </div>
+        </div>
+
+        <div id="account-result" class="account-panel" hidden>
+          <h3 id="account-result-title" tabindex="-1"></h3>
+          <p class="hint" data-i18n="accountPasswordNote">Shown once and stored nowhere. The user must change it at the first sign-in; it expires after one day.</p>
+          <p><code id="account-password" class="account-password"></code></p>
+          <div class="actions">
+            <button type="button" id="account-copy" class="button button-secondary" data-i18n="accountCopy">Copy</button>
+            <button type="button" id="account-hide" class="button button-secondary" data-i18n="accountHide">Hide</button>
+          </div>
+          <p id="account-copy-status" class="sr-status" role="status"></p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

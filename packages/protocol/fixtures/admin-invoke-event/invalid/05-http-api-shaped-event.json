@@ -1,0 +1,10 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /robots",
+  "rawPath": "/robots",
+  "body": "{}",
+  "source": "mfc.admin",
+  "action": "robots.retire",
+  "actor": "vincent",
+  "requestContext": {}
+}

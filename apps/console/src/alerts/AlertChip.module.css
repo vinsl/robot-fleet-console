@@ -1,0 +1,34 @@
+/* Lifecycle chip. Filled for open, outlined for acknowledged, grey for resolved. Every value is a token. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--control-h);
+  padding: 0 var(--space-2);
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+/* The fill colour comes from the severity; the text takes the ink token that contrasts with every severity. */
+.open {
+  color: var(--ink);
+}
+
+.acknowledged {
+  background: transparent;
+}
+
+.resolved {
+  color: var(--alert-resolved);
+  border-color: var(--alert-resolved);
+  background: transparent;
+}
+
+.icon {
+  width: var(--space-4);
+  height: var(--space-4);
+  flex-shrink: 0;
+}

@@ -1,0 +1,58 @@
+{
+  "pages": {
+    "signIn": "Connexion",
+    "fleet": "Flotte",
+    "robot": "Robot",
+    "alerts": "Alertes",
+    "audit": "Audit",
+    "kpi": "KPI",
+    "site": "Site",
+    "robots": "Robots"
+  },
+  "forbidden": {
+    "title": "Accès refusé",
+    "body": "Votre rôle ne permet pas d'accéder à cette page."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "L'adresse ne correspond à aucune page de la console."
+  },
+  "status": {
+    "label": "État du système",
+    "robotsOnline": "{{count}} en ligne",
+    "robotsUnknown": "Robots : pas encore de données",
+    "apiLatency": "L'API répond en {{ms}} ms",
+    "apiDown": "L'API ne répond pas",
+    "connection": "Connexion : {{state}}"
+  },
+  "role": {
+    "Admin": "Administrateur",
+    "Operator": "Opérateur",
+    "Viewer": "Lecteur",
+    "none": "Aucun rôle"
+  },
+  "language": {
+    "label": "Langue",
+    "short": {
+      "en": "EN",
+      "fr": "FR"
+    }
+  },
+  "userMenu": {
+    "label": "Compte",
+    "signOut": "Se déconnecter"
+  },
+  "dock": {
+    "label": "Navigation principale"
+  },
+  "dialog": {
+    "close": "Fermer"
+  },
+  "shortcut": {
+    "search": "Appuyez sur / pour chercher un robot"
+  },
+  "panel": {
+    "widen": "Élargir le panneau",
+    "narrow": "Réduire le panneau"
+  }
+}

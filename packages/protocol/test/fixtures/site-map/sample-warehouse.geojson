@@ -1,0 +1,151 @@
+{
+  "type": "FeatureCollection",
+  "fleet": {
+    "crs": "local-metric",
+    "version": 1
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [0, 0],
+          [60, 0],
+          [60, 40],
+          [0, 40],
+          [0, 0]
+        ]
+      },
+      "properties": {
+        "kind": "wall"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10, 10],
+            [50, 10],
+            [50, 12],
+            [10, 12],
+            [10, 10]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "obstacle"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10, 16],
+            [50, 16],
+            [50, 18],
+            [10, 18],
+            [10, 16]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "obstacle"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10, 22],
+            [50, 22],
+            [50, 24],
+            [10, 24],
+            [10, 22]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "obstacle"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [20, 4],
+            [26, 4],
+            [26, 8],
+            [20, 8],
+            [20, 4]
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "nogo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3, 3]
+      },
+      "properties": {
+        "kind": "charger"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8, 36]
+      },
+      "properties": {
+        "kind": "workstation",
+        "name": "dock-a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [30, 36]
+      },
+      "properties": {
+        "kind": "workstation",
+        "name": "dock-b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [52, 36]
+      },
+      "properties": {
+        "kind": "workstation",
+        "name": "pack-c"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [52, 6]
+      },
+      "properties": {
+        "kind": "workstation",
+        "name": "pack-d"
+      }
+    }
+  ]
+}

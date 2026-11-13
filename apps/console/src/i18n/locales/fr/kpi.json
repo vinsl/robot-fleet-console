@@ -1,0 +1,33 @@
+{
+  "title": "KPI",
+  "availability": {
+    "label": "Disponibilité",
+    "hint": "Robots ni hors ligne, ni bloqués, ni en arrêt d'urgence, maintenant"
+  },
+  "missions": {
+    "label": "Missions/h",
+    "hint": "Missions terminées pendant cette session, sur les 60 dernières minutes",
+    "warming": "{{count}} en {{minutes}} min",
+    "unit": "/h",
+    "warmingUnit": "en {{minutes}} min",
+    "warmingHint": "Taux affiché après {{minutes}} min"
+  },
+  "errorRate": {
+    "label": "Taux d'erreur",
+    "hint": "Blocages et arrêts d'urgence par mission, pendant cette session"
+  },
+  "interventions": {
+    "label": "Interventions par robot",
+    "hint": "Alertes acquittées sur les 24 dernières heures, par robot"
+  },
+  "mttr": {
+    "label": "MTTR",
+    "hint": "Délai moyen entre l'ouverture et la résolution, sur 24 h"
+  },
+  "noData": "Pas encore de données",
+  "partial": "Historique des alertes incomplet",
+  "group": {
+    "session": "Cette session, depuis {{time}}",
+    "day": "24 dernières heures"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "source": "mfc.admin",
+  "action": "robots.retire",
+  "actor": "vincent",
+  "body": {
+    "robotId": "kali-01",
+    "siteId": "paris-01",
+    "status": "RETIRED"
+  }
+}

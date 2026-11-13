@@ -1,0 +1,9 @@
+{
+  "source": "http",
+  "action": "robots.retire",
+  "actor": "vincent",
+  "body": {
+    "robotId": "kali-01",
+    "siteId": "paris-01"
+  }
+}

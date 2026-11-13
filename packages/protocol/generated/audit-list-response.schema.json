@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "items": {
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+          },
+          "siteId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "robotId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{3,32}$"
+          },
+          "alertId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "commandId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "actor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._+-]{1,64}$"
+          },
+          "actorSource": {
+            "type": "string",
+            "enum": [
+              "mfc.admin",
+              "mfc.jwt"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "robots.register",
+              "robots.retire",
+              "site.update",
+              "site.map.create",
+              "site.map.validate",
+              "site.map.activate",
+              "alert.acknowledge",
+              "alert.resolve",
+              "lock.acquire",
+              "lock.release",
+              "command.pause",
+              "command.resume",
+              "command.return_to_base",
+              "command.estop",
+              "command.estop_release",
+              "command.simulate_fault",
+              "demo.enable",
+              "demo.disable"
+            ]
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "SUCCEEDED",
+              "REFUSED",
+              "FAILED"
+            ]
+          },
+          "problemType": {
+            "type": "string",
+            "enum": [
+              "invalid-request",
+              "robot-exists",
+              "robot-not-found",
+              "robot-state-conflict",
+              "provisioning-failed",
+              "retirement-failed",
+              "unauthorized",
+              "forbidden",
+              "not-found",
+              "payload-too-large",
+              "rate-limited",
+              "map-not-found",
+              "map-invalid",
+              "version-limit",
+              "alert-not-found",
+              "alert-state-conflict",
+              "lock-held",
+              "lock-not-held",
+              "command-conflict",
+              "demo-mode-off",
+              "not-simulated",
+              "upstream-failed",
+              "internal"
+            ]
+          },
+          "mapVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999999
+          },
+          "correlationId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{8,64}$"
+          }
+        },
+        "required": [
+          "auditId",
+          "ts",
+          "siteId",
+          "actor",
+          "actorSource",
+          "action",
+          "result",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "nextCursor": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,512}$"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "additionalProperties": false
+}

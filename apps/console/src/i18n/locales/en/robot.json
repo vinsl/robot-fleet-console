@@ -1,0 +1,79 @@
+{
+  "panel": {
+    "noData": "No data yet",
+    "socketDown": "Waiting for the live connection",
+    "commands": "Commands",
+    "log": "Command log",
+    "timeline": "State history (10 min)"
+  },
+  "readouts": {
+    "name": "Name",
+    "speed": "Speed",
+    "speedValue": "{{value}} m/s",
+    "battery": "Battery",
+    "batteryValue": "{{value}} %",
+    "latency": "Last round trip",
+    "latencyValue": "{{ms}} ms",
+    "position": "Position",
+    "positionValue": "x {{x}} m · y {{y}} m",
+    "empty": "–"
+  },
+  "log": {
+    "empty": "No command yet"
+  },
+  "command": {
+    "pause": "Pause",
+    "resume": "Resume",
+    "return_to_base": "Return to base",
+    "estop": "E-stop",
+    "estop_release": "Release e-stop",
+    "take_control": "Take control",
+    "release_control": "Release control",
+    "simulate_fault": "Simulate fault"
+  },
+  "ack": {
+    "noAnswer": "No answer",
+    "alreadyApplied": "Already applied",
+    "failed": "Failed",
+    "reason": {
+      "EXPIRED": "expired",
+      "DUPLICATE": "duplicate",
+      "INVALID_STATE": "invalid state",
+      "NOT_LOCK_HOLDER": "not the lock holder",
+      "INVALID": "invalid",
+      "NOT_SIMULATED": "not a simulated robot"
+    }
+  },
+  "lock": {
+    "mine": "Control: you",
+    "other": "{{label}} has control",
+    "free": "No one has control",
+    "unknown": "Control status unknown",
+    "holder": "Operator {{id}}",
+    "takeHint": "Take control first",
+    "linkLost": "Control link lost, the robot pauses in 1 s"
+  },
+  "release": {
+    "title": "Release the e-stop?",
+    "body": "The robot leaves the e-stop: it goes back to idle if it was idle, otherwise it stays paused. Control is taken first.",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "fault": {
+    "select": "Fault",
+    "OBSTACLE": "Obstacle",
+    "SENSOR_FAULT": "Sensor fault",
+    "BATTERY_LOW": "Low battery",
+    "LINK_LOSS": "Link loss"
+  },
+  "video": {
+    "label": "Live camera",
+    "loading": "Connecting video…",
+    "unavailable": "Video unavailable",
+    "noCamera": "No camera",
+    "latency": "LIVE · {{ms}} ms",
+    "live": "LIVE",
+    "hideInfo": "Hide the information",
+    "showInfo": "Show the information"
+  }
+}

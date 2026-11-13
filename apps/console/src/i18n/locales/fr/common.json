@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "Fleet Console",
+    "bootFailed": "La console n'a pas pu démarrer. Rechargez la page ou réessayez plus tard."
+  },
+  "duration": {
+    "seconds": "{{count}} s",
+    "minutes": "{{count}} min",
+    "hoursMinutes": "{{hours}} h {{minutes}} min"
+  },
+  "percent": "{{value}} %"
+}

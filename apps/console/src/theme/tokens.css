@@ -1,0 +1,208 @@
+/*
+ * CSS mirror of `tokens.ts` (style "Graphite", layout "Plan"). Keep both files in sync in the same commit.
+ * The console is dark only: there is no light theme to switch to.
+ * Usage rules: docs/design/DESIGN.md.
+ */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces and text */
+  --bg-base: #050608;
+  --bg-raised: #16181c;
+  --bg-gradient: radial-gradient(120% 90% at 50% 40%, var(--bg-raised) 0%, var(--bg-base) 72%);
+  --glass-fill: rgba(22, 24, 28, 0.55);
+  --glass-fallback: #141619;
+  --glass-edge: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-blur: 26px;
+  --glass-saturate: 1.5;
+  --glass-shadow: inset 0 1px 0 var(--glass-highlight), 0 20px 50px rgba(0, 0, 0, 0.35);
+  --text-primary: #f2f3f5;
+  --text-secondary: #a3a5a8;
+  --text-tertiary: #8e9093;
+  --accent: #f2f3f5;
+  --accent-fill: #f2f3f5;
+  --accent-ink: #0a0b0d;
+  --ink: #0a0b0d;
+  --focus-ring: #f2f3f5;
+  --scrim-soft: rgba(0, 0, 0, 0.45);
+  --scrim-strong: rgba(5, 6, 8, 0.72);
+
+  /* Robot states (validated 2026-10-30) */
+  --state-nominal: #f2f3f5;
+  --state-idle: #8e949c;
+  --state-charging: #5bd69a;
+  --state-human: #7fb0ff;
+  --state-blocked: #f2b84b;
+  --state-estop: #ff5f57;
+  --state-offline: #6b7078;
+
+  /* Alerts */
+  --alert-critical: #ff5f57;
+  --alert-major: #f2b84b;
+  --alert-minor: #f2f3f5;
+  --alert-info: #7fb0ff;
+  --alert-resolved: #8e949c;
+
+  /* E-stop button */
+  --estop-fill: #d7322b;
+  --estop-text: #ffffff;
+
+  /* Map */
+  --map-wall: rgba(255, 255, 255, 0.5);
+  --map-rack: rgba(255, 255, 255, 0.05);
+  --map-rack-line: rgba(255, 255, 255, 0.2);
+  --map-grid: rgba(255, 255, 255, 0.045);
+  --map-station: rgba(255, 255, 255, 0.6);
+  --map-nogo-fill: rgba(255, 95, 87, 0.08);
+  --map-nogo-line: rgba(255, 95, 87, 0.55);
+  --map-tilt: 42deg;
+  --map-tilt-compact: 30deg;
+  --map-perspective: 1100px;
+  --opacity-stale: 0.55;
+  --opacity-disabled: 0.5;
+
+  /* Type */
+  --typeface-sans: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --typeface-mono:
+    "Geist Mono Variable", "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --number: 30px;
+  --number-lg: 40px;
+  --tracking-number: -0.02em;
+  --tracking-label: 0.12em;
+
+  /* Spacing, radii, sizes */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --radius-surface: 20px;
+  --radius-inner: 12px;
+  --radius-pill: 9999px;
+  --control-h: 40px;
+  --control-h-coarse: 44px;
+  --marker: 24px;
+  --badge: 15px;
+  --panel-w: 400px;
+  --panel-w-focus: 560px;
+  --panel-w-expanded: 60vw;
+  --video-max-h: 55vh;
+  --sheet-max-w: 960px;
+  --hairline: 1px;
+  --font-weight-medium: 500;
+  --z-panel: 5;
+  --z-scrim: 10;
+  --z-sheet: 11;
+  --z-overlay: 20;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-panel: 220ms;
+  --dur-fly: 400ms;
+  --dur-pulse: 1800ms;
+  --dur-none: 0ms;
+
+  /* shadcn/ui variables, mapped onto the tokens above */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--glass-fallback);
+  --card-foreground: var(--text-primary);
+  --popover: var(--glass-fallback);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--accent-ink);
+  --secondary: rgba(255, 255, 255, 0.07);
+  --secondary-foreground: var(--text-primary);
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: var(--text-secondary);
+  --destructive: var(--estop-fill);
+  --border: var(--glass-edge);
+  --input: var(--glass-edge);
+  --ring: var(--focus-ring);
+  --radius: var(--radius-inner);
+}
+
+@media (pointer: coarse) {
+  :root {
+    --control-h: var(--control-h-coarse);
+  }
+}
+
+@media (max-width: 639px), (max-height: 500px) {
+  :root {
+    --map-tilt: var(--map-tilt-compact);
+  }
+}
+
+html,
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--typeface-sans);
+  font-size: var(--text-base);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Every floating surface. Falls back to an opaque fill when blur is unavailable or unwanted. */
+.glass {
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--glass-fallback);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--glass-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@keyframes state-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+.state-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: state-pulse var(--dur-pulse) ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .state-pulse {
+    animation: none;
+    opacity: 0.5;
+  }
+}

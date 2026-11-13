@@ -1,0 +1,89 @@
+/* Site map drawing and legend. Every colour is a --map-* or text token; widths are multiples of --hairline. */
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* A long workstation name may run past the frame; it is shown rather than cut. */
+  overflow: visible;
+}
+
+/* Outline widths use the screen pixel (non-scaling-stroke), so walls keep their weight at any zoom. */
+.wall {
+  fill: none;
+  stroke: var(--map-wall);
+  stroke-width: calc(var(--hairline) * 2);
+}
+
+.rack {
+  fill: var(--map-rack);
+  stroke: var(--map-rack-line);
+  stroke-width: var(--hairline);
+}
+
+.nogoArea {
+  stroke: var(--map-nogo-line);
+  stroke-width: var(--hairline);
+  stroke-dasharray: calc(var(--hairline) * 6);
+}
+
+/* The hatch width is an attribute in marker units (HATCH_STROKE_UNITS): a CSS width here would be read in metres. */
+.hatch {
+  stroke: var(--map-nogo-line);
+}
+
+.nogoSwatch {
+  fill: var(--map-nogo-fill);
+}
+
+.station {
+  fill: var(--map-station);
+}
+
+/* The footprint of a sized workstation: the rack fill, outlined in the station colour. */
+.stationArea {
+  fill: var(--map-rack);
+  stroke: var(--map-station);
+  stroke-width: var(--hairline);
+}
+
+.charger {
+  /* The bolt shape and its label carry the meaning; the colour only repeats the station token. */
+  color: var(--map-station);
+}
+
+/*
+ * Labels carry a dark halo, so they read over walls and the hatch. The halo width is an attribute in marker units
+ * (LABEL_HALO_UNITS). Round joins keep it smooth: a miter join spikes on the glyphs.
+ */
+.label {
+  fill: var(--text-primary);
+  stroke: var(--bg-base);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  paint-order: stroke;
+  font-family: var(--typeface-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.legendIcon {
+  width: var(--space-4);
+  height: var(--space-4);
+  flex: none;
+}

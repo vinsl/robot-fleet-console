@@ -1,0 +1,6 @@
+{
+  "type": "urn:mfc:problem:robot-exists",
+  "title": "",
+  "status": 409,
+  "correlationId": "corr-0001-abcd"
+}

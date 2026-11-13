@@ -1,0 +1,15 @@
+/* QR code: dark modules on the light text colour, sized by a token. */
+.qr {
+  display: block;
+  width: min(100%, var(--panel-w));
+  height: auto;
+  margin: var(--space-4) auto;
+}
+
+.background {
+  fill: var(--text-primary);
+}
+
+.modules {
+  fill: var(--ink);
+}

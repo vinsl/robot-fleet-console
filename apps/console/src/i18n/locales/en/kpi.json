@@ -1,0 +1,33 @@
+{
+  "title": "KPI",
+  "availability": {
+    "label": "Availability",
+    "hint": "Robots not offline, blocked or in e-stop, now"
+  },
+  "missions": {
+    "label": "Missions/h",
+    "hint": "Missions completed in this session, last 60 min",
+    "warming": "{{count}} in {{minutes}} min",
+    "unit": "/h",
+    "warmingUnit": "in {{minutes}} min",
+    "warmingHint": "Rate shown after {{minutes}} min"
+  },
+  "errorRate": {
+    "label": "Error rate",
+    "hint": "Blocks and e-stops per mission, this session"
+  },
+  "interventions": {
+    "label": "Interventions per robot",
+    "hint": "Alerts acknowledged in the last 24 h, per robot"
+  },
+  "mttr": {
+    "label": "MTTR",
+    "hint": "Mean time from opening to resolution, last 24 h"
+  },
+  "noData": "No data yet",
+  "partial": "Alert history incomplete",
+  "group": {
+    "session": "This session, since {{time}}",
+    "day": "Last 24 h"
+  }
+}

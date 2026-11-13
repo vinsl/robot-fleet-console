@@ -1,0 +1,106 @@
+/* Top status line. No surface: a gradient from the base colour keeps the text readable over the map. */
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(var(--bg-base), transparent);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.brand {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.clock {
+  font-size: var(--text-md);
+  color: var(--text-primary);
+}
+
+.connection {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h);
+  border-radius: var(--radius-pill);
+}
+
+.icon {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-inner);
+  background: var(--glass-fallback);
+  color: var(--text-primary);
+  white-space: nowrap;
+  z-index: var(--z-overlay);
+}
+
+.connection:hover .tooltip,
+.connection:focus-visible .tooltip {
+  display: block;
+}
+
+.robots,
+.role {
+  white-space: nowrap;
+}
+
+.alerts {
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+/* Compact screen (ADR 0075): the site name, the connection icon and the alert count only. */
+.phoneOnly {
+  display: none;
+}
+
+@media (max-width: 639px), (max-height: 500px) {
+  .clock,
+  .robots,
+  .role,
+  .connectionText {
+    display: none;
+  }
+
+  .phoneOnly {
+    display: inline-flex;
+  }
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* Connection colours: state tokens, one class per status. */
+.live {
+  color: var(--state-charging);
+}
+
+.reconnecting {
+  color: var(--state-blocked);
+}
+
+.offline {
+  color: var(--state-estop);
+}

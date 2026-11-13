@@ -1,0 +1,13 @@
+{
+  "source": "mfc.admin",
+  "action": "robots.register",
+  "actor": "vincent+ops",
+  "body": {
+    "robotId": "sim-01",
+    "siteId": "paris-01",
+    "name": "Kali robot",
+    "type": "AMR-7",
+    "designDate": "2026-10-30",
+    "simulated": true
+  }
+}

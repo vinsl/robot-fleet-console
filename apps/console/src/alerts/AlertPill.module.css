@@ -1,0 +1,70 @@
+/* Alert pill at the top centre of the map. Glass surface; every value is a token. */
+.pill {
+  position: absolute;
+  top: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-panel);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  max-width: calc(100% - var(--space-5) * 2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+}
+
+.message {
+  font-weight: var(--font-weight-medium);
+}
+
+.age {
+  color: var(--text-secondary);
+}
+
+.action {
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Compact screens (phone, portrait or landscape): the pill takes the full width under the status line. */
+@media (max-width: 639px), (max-height: 500px) {
+  .pill {
+    left: var(--space-3);
+    right: var(--space-3);
+    transform: none;
+    max-width: none;
+    border-radius: var(--radius-surface);
+  }
+}
+
+/*
+ * Short landscape screen (ADR 0075): no banner across the top. The pill sits in the bottom left corner of the map,
+ * where the KPI corner is on a large screen, and is smaller.
+ */
+@media (max-height: 500px) {
+  .pill {
+    top: auto;
+    bottom: var(--space-2);
+    left: var(--space-3);
+    right: auto;
+    transform: none;
+    max-width: 50%;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+  }
+
+  .action {
+    min-height: calc(var(--control-h) / 2);
+    padding: 0 var(--space-2);
+  }
+}

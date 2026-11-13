@@ -1,0 +1,56 @@
+{
+  "title": "Alertes",
+  "tabs": {
+    "active": "Actives",
+    "history": "Historique (24 h)"
+  },
+  "filter": {
+    "severity": "Gravité",
+    "all": "Toutes",
+    "robot": "Robot"
+  },
+  "kind": {
+    "ESTOP": "{{robot}} en arrêt d'urgence",
+    "BLOCKED": "{{robot}} bloqué",
+    "OFFLINE": "{{robot}} hors ligne",
+    "LOW_BATTERY": "{{robot}} batterie faible"
+  },
+  "cause": "Cause : {{cause}}",
+  "openedAgo": "il y a {{age}}",
+  "acknowledge": "Acquitter",
+  "resolve": "Résoudre",
+  "acknowledgedBy": "Acquittée par {{who}}, il y a {{age}}",
+  "resolvedAfter": "Résolue par {{who}} après {{duration}}",
+  "you": "toi",
+  "operator": "opérateur {{id}}",
+  "readOnly": "Les lecteurs peuvent consulter les alertes sans les modifier.",
+  "empty": {
+    "active": "Aucune alerte ouverte.",
+    "history": "Aucune alerte résolue ces dernières 24 h."
+  },
+  "loadMore": "Charger plus",
+  "loading": "Chargement des alertes…",
+  "error": {
+    "load": "Les alertes n'ont pas pu être chargées.",
+    "action": "L'alerte n'a pas pu être mise à jour.",
+    "conflict": "L'alerte a changé entre-temps. La liste a été actualisée.",
+    "notFound": "Cette alerte n'existe plus."
+  },
+  "pill": {
+    "view": "Voir",
+    "count_one": "{{count}} alerte ouverte",
+    "count_other": "{{count}} alertes ouvertes",
+    "openSheet": "Ouvrir les alertes"
+  },
+  "sound": {
+    "on": "Son d'alerte activé",
+    "muted": "Son d'alerte coupé",
+    "blocked": "Cliquer pour activer le son d'alerte"
+  },
+  "announce": {
+    "CRITICAL": "Alerte critique : {{message}}",
+    "MAJOR": "Alerte majeure : {{message}}"
+  },
+  "dockCount_one": "{{count}} ouverte",
+  "dockCount_other": "{{count}} ouvertes"
+}

@@ -1,0 +1,39 @@
+{
+  "state": {
+    "moving": "Moving",
+    "working": "Working",
+    "idle": "Idle",
+    "charging": "Charging",
+    "paused": "Paused",
+    "teleop": "Teleop",
+    "blocked": "Blocked",
+    "estop": "E-stop",
+    "offline": "Offline"
+  },
+  "badge": {
+    "lowBattery": "Low battery",
+    "sensorFault": "Sensor fault",
+    "lockMine": "Control: you",
+    "lockOther": "{{name}} has control",
+    "camera": "Live",
+    "stale": "{{seconds}} s ago",
+    "simulated": "Simulated"
+  },
+  "alert": {
+    "critical": "Critical",
+    "major": "Major",
+    "minor": "Minor",
+    "info": "Info",
+    "resolved": "Resolved"
+  },
+  "command": {
+    "pending": "{{command}} · sending…",
+    "ack": "{{command}} · {{latency}} ms",
+    "reject": "{{command}} · {{reason}}"
+  },
+  "connection": {
+    "live": "Live",
+    "reconnecting": "Reconnecting…",
+    "offline": "Offline"
+  }
+}

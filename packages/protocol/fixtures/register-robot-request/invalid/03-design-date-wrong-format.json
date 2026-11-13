@@ -1,0 +1,8 @@
+{
+  "robotId": "kali-01",
+  "siteId": "paris-01",
+  "name": "Kali robot",
+  "type": "AMR-7",
+  "designDate": "30/10/2026",
+  "simulated": false
+}

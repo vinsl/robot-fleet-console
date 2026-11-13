@@ -1,0 +1,1277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "fleet.delta"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "sentAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+        },
+        "robots": {
+          "minItems": 1,
+          "maxItems": 70,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "robotId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "bootId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ts": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              },
+              "x": {
+                "type": "number",
+                "minimum": -1000,
+                "maximum": 1000
+              },
+              "y": {
+                "type": "number",
+                "minimum": -1000,
+                "maximum": 1000
+              },
+              "heading": {
+                "type": "number",
+                "minimum": -3.141592653589793,
+                "maximum": 3.141592653589793
+              },
+              "speed": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "battery": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "IDLE",
+                  "WORKING",
+                  "MOVING",
+                  "CHARGING",
+                  "BLOCKED",
+                  "PAUSED",
+                  "TELEOP",
+                  "ESTOP",
+                  "OFFLINE"
+                ]
+              },
+              "missionId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{1,64}$"
+              },
+              "errorCode": {
+                "type": "string",
+                "enum": [
+                  "OBSTACLE",
+                  "SENSOR_FAULT",
+                  "BATTERY_LOW",
+                  "LINK_LOSS"
+                ]
+              }
+            },
+            "required": [
+              "robotId",
+              "bootId",
+              "seq",
+              "ts",
+              "x",
+              "y",
+              "heading",
+              "speed",
+              "battery",
+              "state"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "sentAt",
+        "robots"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "fleet.snapshot"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "sentAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+        },
+        "robots": {
+          "maxItems": 60,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "robotId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "siteId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{3,32}$"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "IDLE",
+                  "WORKING",
+                  "MOVING",
+                  "CHARGING",
+                  "BLOCKED",
+                  "PAUSED",
+                  "TELEOP",
+                  "ESTOP",
+                  "OFFLINE"
+                ]
+              },
+              "battery": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "pose": {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  },
+                  "heading": {
+                    "type": "number",
+                    "minimum": -3.141592653589793,
+                    "maximum": 3.141592653589793
+                  },
+                  "speed": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 5
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "heading",
+                  "speed"
+                ],
+                "additionalProperties": false
+              },
+              "missionId": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{1,64}$"
+              },
+              "errorCode": {
+                "type": "string",
+                "enum": [
+                  "OBSTACLE",
+                  "SENSOR_FAULT",
+                  "BATTERY_LOW",
+                  "LINK_LOSS"
+                ]
+              },
+              "bootId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ts": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+              },
+              "receivedAt": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "robotId",
+              "siteId",
+              "state",
+              "battery",
+              "bootId",
+              "seq",
+              "ts",
+              "receivedAt"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "sentAt",
+        "robots"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "robot.presence"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "robotId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "presence": {
+          "type": "string",
+          "enum": [
+            "ONLINE",
+            "OFFLINE"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "robotId",
+        "presence",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "robot.event"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "robotId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "event": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "BOOT"
+                },
+                "agentVersion": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "simulated": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "agentVersion",
+                "simulated",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "STATE_CHANGED"
+                },
+                "from": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                },
+                "to": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                },
+                "cause": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ESTOP",
+                        "ESTOP_RELEASE",
+                        "PAUSE",
+                        "RESUME",
+                        "RETURN_TO_BASE",
+                        "TAKE_CONTROL",
+                        "RELEASE_CONTROL",
+                        "HEARTBEAT",
+                        "SIMULATE_FAULT:OBSTACLE",
+                        "SIMULATE_FAULT:SENSOR_FAULT",
+                        "SIMULATE_FAULT:BATTERY_LOW",
+                        "SIMULATE_FAULT:LINK_LOSS"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "MISSION_ASSIGNED",
+                        "ARRIVED",
+                        "WORK_DONE",
+                        "CHARGED",
+                        "OBSTACLE_DETECTED",
+                        "SENSOR_FAULT",
+                        "CAUSE_CLEARED",
+                        "BATTERY_LOW",
+                        "DEADMAN_EXPIRED",
+                        "LOCK_EXPIRED"
+                      ]
+                    }
+                  ]
+                },
+                "commandId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "from",
+                "to",
+                "cause"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "HEARTBEAT"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                },
+                "battery": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "state",
+                "battery"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "FAULT_RAISED"
+                },
+                "fault": {
+                  "type": "string",
+                  "enum": [
+                    "OBSTACLE",
+                    "SENSOR_FAULT",
+                    "BATTERY_LOW",
+                    "LINK_LOSS"
+                  ]
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "fault"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "FAULT_CLEARED"
+                },
+                "fault": {
+                  "type": "string",
+                  "enum": [
+                    "OBSTACLE",
+                    "SENSOR_FAULT",
+                    "BATTERY_LOW",
+                    "LINK_LOSS"
+                  ]
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "fault"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string",
+                      "pattern": "^1\\.\\d+\\.\\d+$"
+                    },
+                    "messageId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                    },
+                    "robotId": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9-]{3,32}$"
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9-]{3,32}$"
+                    },
+                    "ts": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bootId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "const": "LOCK_CHANGED"
+                    },
+                    "held": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "holder": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9-]{1,128}$"
+                    },
+                    "cause": {
+                      "type": "string",
+                      "enum": [
+                        "ACQUIRED",
+                        "RELEASED",
+                        "EXPIRED",
+                        "TAKEOVER"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "schemaVersion",
+                    "messageId",
+                    "robotId",
+                    "siteId",
+                    "ts",
+                    "seq",
+                    "bootId",
+                    "kind",
+                    "held",
+                    "holder",
+                    "cause"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string",
+                      "pattern": "^1\\.\\d+\\.\\d+$"
+                    },
+                    "messageId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                    },
+                    "robotId": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9-]{3,32}$"
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9-]{3,32}$"
+                    },
+                    "ts": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                    },
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bootId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "const": "LOCK_CHANGED"
+                    },
+                    "held": {
+                      "type": "boolean",
+                      "const": false
+                    },
+                    "cause": {
+                      "type": "string",
+                      "enum": [
+                        "ACQUIRED",
+                        "RELEASED",
+                        "EXPIRED",
+                        "TAKEOVER"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "schemaVersion",
+                    "messageId",
+                    "robotId",
+                    "siteId",
+                    "ts",
+                    "seq",
+                    "bootId",
+                    "kind",
+                    "held",
+                    "cause"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "GOING_OFFLINE"
+                },
+                "reason": {
+                  "type": "string",
+                  "const": "SHUTDOWN"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "kind",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "robotId",
+        "event"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "command.ack"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "ack": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "commandId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "correlationId": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{8,64}$"
+                },
+                "robotTs": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                },
+                "result": {
+                  "type": "string",
+                  "const": "ACK"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "commandId",
+                "correlationId",
+                "robotTs",
+                "state",
+                "result"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "pattern": "^1\\.\\d+\\.\\d+$"
+                },
+                "messageId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "robotId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "siteId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]{3,32}$"
+                },
+                "ts": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "seq": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "bootId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "commandId": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "correlationId": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9-]{8,64}$"
+                },
+                "robotTs": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "WORKING",
+                    "MOVING",
+                    "CHARGING",
+                    "BLOCKED",
+                    "PAUSED",
+                    "TELEOP",
+                    "ESTOP"
+                  ]
+                },
+                "result": {
+                  "type": "string",
+                  "const": "REJECT"
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "EXPIRED",
+                    "DUPLICATE",
+                    "INVALID_STATE",
+                    "NOT_LOCK_HOLDER",
+                    "INVALID",
+                    "NOT_SIMULATED"
+                  ]
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "messageId",
+                "robotId",
+                "siteId",
+                "ts",
+                "seq",
+                "bootId",
+                "commandId",
+                "correlationId",
+                "robotTs",
+                "state",
+                "result",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "ack"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "alert.changed"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "change": {
+          "type": "string",
+          "enum": [
+            "OPENED",
+            "ACKNOWLEDGED",
+            "RESOLVED"
+          ]
+        },
+        "alert": {
+          "type": "object",
+          "properties": {
+            "alertId": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            },
+            "siteId": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            },
+            "robotId": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "ESTOP",
+                "BLOCKED",
+                "OFFLINE",
+                "LOW_BATTERY"
+              ]
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "CRITICAL",
+                "MAJOR",
+                "MINOR",
+                "INFO"
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "ACKNOWLEDGED",
+                "RESOLVED"
+              ]
+            },
+            "openedAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+            },
+            "cause": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_:]{1,64}$"
+            },
+            "sourceMessageId": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "acknowledgedBy": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9-]{1,128}$"
+            },
+            "acknowledgedAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+            },
+            "resolvedBy": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9-]{1,128}$"
+            },
+            "resolvedAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+            }
+          },
+          "required": [
+            "alertId",
+            "siteId",
+            "robotId",
+            "kind",
+            "severity",
+            "status",
+            "openedAt"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "change",
+        "alert"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "lock.changed"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "robotId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "held": {
+          "type": "boolean"
+        },
+        "holder": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9-]{1,128}$"
+        },
+        "cause": {
+          "type": "string",
+          "enum": [
+            "ACQUIRED",
+            "RELEASED",
+            "EXPIRED",
+            "TAKEOVER"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "siteId",
+        "robotId",
+        "held",
+        "cause"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "error"
+        },
+        "code": {
+          "type": "string",
+          "enum": [
+            "INVALID_MESSAGE",
+            "FORBIDDEN_SITE",
+            "FORBIDDEN_ROLE",
+            "SESSION_EXPIRED",
+            "UNSUPPORTED",
+            "SNAPSHOT_FAILED"
+          ]
+        },
+        "correlationId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9-]{8,64}$"
+        }
+      },
+      "required": [
+        "type",
+        "code"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+packages:
+  - "apps/*"
+  - "services/*"
+  - "packages/*"
+
+# Value is in minutes (14 days). Refuses versions published less than 14 days ago,
+# which limits exposure to a compromised release before the community detects it.
+minimumReleaseAge: 20160
+
+# Packages with install scripts must be listed explicitly. Keeps the supply-chain
+# surface small: nothing runs at install time unless we decided it should.
+strictDepBuilds: true
+
+onlyBuiltDependencies:
+  - esbuild
+
+# Fail the install on a Node.js version below engines.node, so that CI and the
+# devcontainer cannot silently diverge from the runtime we deploy to.
+engineStrict: true

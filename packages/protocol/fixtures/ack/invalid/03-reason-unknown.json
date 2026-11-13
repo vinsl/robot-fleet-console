@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "messageId": "0190a7c4-5b1e-7d2a-9c3f-4e5d6a7b8c9d",
+  "robotId": "kali-01",
+  "siteId": "paris-01",
+  "ts": "2026-11-01T10:00:00.000Z",
+  "seq": 42,
+  "bootId": "0190a7c4-0000-7000-8000-000000000001",
+  "commandId": "0190a7c5-1f00-7a00-8b00-00000000c001",
+  "correlationId": "corr-0001-abcd",
+  "robotTs": "2026-11-01T10:00:01.050Z",
+  "state": "TELEOP",
+  "result": "REJECT",
+  "reason": "UNKNOWN_REASON"
+}

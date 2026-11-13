@@ -1,0 +1,30 @@
+/* Alert sound toggle in the status line. Icon and text carry the state; the colour only repeats it. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font: inherit;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.toggle:hover {
+  background: var(--glass-highlight);
+}
+
+.icon {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+/* On a compact screen (ADR 0075) the status line keeps the icon only; the accessible name is the aria-label. */
+@media (max-width: 639px), (max-height: 500px) {
+  .label {
+    display: none;
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "robot": {
+      "type": "object",
+      "properties": {
+        "robotId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "siteId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,32}$"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9À-ÖØ-öø-ÿ ._-]{1,64}$"
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9-]{1,32}$"
+        },
+        "designDate": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+        },
+        "simulated": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PROVISIONING",
+            "ACTIVE",
+            "PROVISIONING_FAILED",
+            "RETIRING",
+            "RETIRED"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+        },
+        "retiredAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+        }
+      },
+      "required": [
+        "robotId",
+        "siteId",
+        "name",
+        "type",
+        "designDate",
+        "simulated",
+        "status",
+        "createdAt"
+      ],
+      "additionalProperties": false
+    },
+    "kit": {
+      "type": "object",
+      "properties": {
+        "certificatePem": {
+          "type": "string",
+          "maxLength": 4096,
+          "pattern": "^-----BEGIN CERTIFICATE-----\\n[A-Za-z0-9+/=\\n]+\\n-----END CERTIFICATE-----\\n?$"
+        },
+        "privateKeyPem": {
+          "type": "string",
+          "maxLength": 4096,
+          "pattern": "^(?:-----BEGIN RSA PRIVATE(?:) KEY-----\\n[A-Za-z0-9+/=\\n]+\\n-----END RSA PRIVATE(?:) KEY-----|-----BEGIN PRIVATE(?:) KEY-----\\n[A-Za-z0-9+/=\\n]+\\n-----END PRIVATE(?:) KEY-----)\\n?$"
+        },
+        "rootCaPem": {
+          "type": "string",
+          "maxLength": 4096,
+          "pattern": "^-----BEGIN CERTIFICATE-----\\n[A-Za-z0-9+/=\\n]+\\n-----END CERTIFICATE-----\\n?$"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "robotId": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            },
+            "siteId": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]{3,32}$"
+            },
+            "thingName": {
+              "type": "string",
+              "pattern": "^mfc-demo-[a-z0-9-]{3,32}$"
+            },
+            "simulated": {
+              "type": "boolean"
+            },
+            "region": {
+              "type": "string",
+              "enum": [
+                "eu-west-3",
+                "eu-west-1"
+              ]
+            },
+            "iotEndpoint": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+-ats\\.iot\\.(?:eu-west-3|eu-west-1)\\.amazonaws\\.com$"
+            },
+            "credentialsEndpoint": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+\\.credentials\\.iot\\.(?:eu-west-3|eu-west-1)\\.amazonaws\\.com$"
+            },
+            "roleAlias": {
+              "type": "string",
+              "const": "mfc-demo-robot-kvs-master"
+            },
+            "kvsChannelName": {
+              "type": "string",
+              "pattern": "^mfc-demo-[a-z0-9-]{3,32}$"
+            },
+            "kvsChannelArn": {
+              "type": "string",
+              "pattern": "^arn:aws:kinesisvideo:(?:eu-west-3|eu-west-1):\\d{12}:channel\\/mfc-demo-[a-z0-9-]{3,32}\\/\\d{1,20}$"
+            }
+          },
+          "required": [
+            "robotId",
+            "siteId",
+            "thingName",
+            "simulated",
+            "region",
+            "iotEndpoint",
+            "credentialsEndpoint",
+            "roleAlias",
+            "kvsChannelName",
+            "kvsChannelArn"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "certificatePem",
+        "privateKeyPem",
+        "rootCaPem",
+        "config"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "robot",
+    "kit"
+  ],
+  "additionalProperties": false
+}

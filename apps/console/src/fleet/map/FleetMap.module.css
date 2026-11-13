@@ -1,0 +1,62 @@
+/*
+ * Tilted fleet map. The plane is rotated from JS with the tilt of the viewport (flat, tilted or compact), so the
+ * projection of the markers uses the same value. The transform origin must stay in line with ORIGIN_* in
+ * geometry-hooks.ts.
+ */
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: var(--map-perspective);
+  /* The map handles its own drag and pinch; the page must not scroll under it. */
+  touch-action: none;
+  outline: none;
+}
+
+.plane {
+  position: absolute;
+  inset: 10% 8%;
+  transform-origin: 50% 60%;
+}
+
+/* The map is positioned in the plane's pixels; its zoom and pan come from the view state. */
+.content {
+  position: absolute;
+}
+
+.notice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: calc(100% - var(--space-5) * 2);
+  max-width: var(--panel-w);
+  padding: var(--space-4);
+  transform: translate(-50%, -50%);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.retry {
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--secondary);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.retry:focus-visible {
+  outline: calc(var(--hairline) * 2) solid var(--focus-ring);
+  outline-offset: var(--hairline);
+}

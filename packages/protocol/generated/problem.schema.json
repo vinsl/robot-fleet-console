@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^urn:mfc:problem:[a-z-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "detail": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "correlationId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]{8,64}$"
+    }
+  },
+  "required": [
+    "type",
+    "title",
+    "status",
+    "correlationId"
+  ],
+  "additionalProperties": false
+}

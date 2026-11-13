@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "status": 200,
+  "problem": {
+    "type": "urn:mfc:problem:robot-exists",
+    "title": "Robot already exists",
+    "status": 409,
+    "correlationId": "corr-0001-abcd"
+  }
+}

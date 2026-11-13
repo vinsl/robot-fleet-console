@@ -1,0 +1,8 @@
+{
+  "apiUrl": "https://abc123defg.execute-api.eu-west-3.amazonaws.com",
+  "wsUrl": "wss://xyz987wvut.execute-api.eu-west-3.amazonaws.com/ws",
+  "region": "eu-west-3",
+  "userPoolId": "eu-west-3_EXAMPLE1",
+  "userPoolClientId": "examplecl1234567890example",
+  "identityPoolId": "eu-west-3:00000000-0000-0000-0000-000000000000"
+}

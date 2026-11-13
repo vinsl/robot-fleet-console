@@ -1,0 +1,59 @@
+/*
+ * Layer of the robot markers, over the plane. The layer and its group let pointer events through; each marker
+ * takes them back, so the map under the markers can still be panned.
+ */
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.group {
+  position: absolute;
+  inset: 0;
+}
+
+/* Positioned at the origin; the JS transform moves the marker centre to the robot. */
+.marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--marker);
+  height: var(--marker);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.marker:focus {
+  outline: none;
+}
+
+.marker:focus-visible {
+  outline: calc(var(--hairline) * 2) solid var(--focus-ring);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-pill);
+}
+
+/* Robot identifier under the marker, on a scrim so that it reads over the plan. */
+.id {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: var(--space-1);
+  padding: 0 var(--space-1);
+  transform: translateX(-50%);
+  border-radius: var(--radius-pill);
+  background: var(--scrim-strong);
+  color: var(--text-primary);
+  font-family: var(--typeface-mono);
+  font-size: var(--text-xs);
+  line-height: var(--text-sm);
+  white-space: nowrap;
+}

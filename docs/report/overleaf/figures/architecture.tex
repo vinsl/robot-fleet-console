@@ -1,0 +1,90 @@
+% Architecture diagram: robots | AWS eu-west-3 | users, with a deployment band underneath.
+% The console is a web application served by the platform, distinct from the people who use it.
+% Line style carries the flow type (solid telemetry, dashed commands, dotted video, grey deployment).
+% Coordinates are in centimetres; the picture is 18.2 cm wide, the text width.
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % Lanes.
+  \draw[lane] (0,2.2) rectangle (2.9,5.95);
+  \node[sub, anchor=north west] at (0.12,5.9) {Robots};
+  \draw[lane, fill=wash!60] (3.5,0.1) rectangle (14.6,6.3);
+  \node[sub, anchor=north west] at (3.65,6.22) {AWS · eu-west-3};
+  \draw[lane] (15.9,0.9) rectangle (18.2,5.95);
+  \node[sub, anchor=north west] at (16.02,5.9) {Utilisateurs};
+
+  % Robot lane.
+  \ico{cam}{1.45,5.1}{Res_IoT_Thing_Camera}{Caméra}
+  \ico{agent}{1.45,3.5}{Res_IoT_Thing_Generic}{Agent Python}
+  \node[sub, below=0pt of agentl] {X.509 · deadman local};
+
+  % AWS components.
+  \icoa{iot}{4.9,3.5}{AWS-IoT-Core}{IoT Core}
+  \ico{sqs}{7.1,3.5}{Amazon-Simple-Queue-Service}{SQS}
+  \draw[rounded corners=1.5mm, fill=white, draw=hairline, line width=0.4pt] (8.3,2.85) rectangle (11.7,4.15);
+  \node[inner sep=0] (lam) at (8.85,3.5) {\includegraphics[height=7mm]{icons/AWS-Lambda.pdf}};
+  \node[sub, anchor=west, align=left, text=ink] at (9.25,3.5)
+    {ingest · control · alerts\\audit · kpi · site · ws};
+  \icoa{ddb}{10,5.1}{Amazon-DynamoDB}{DynamoDB}
+  \ico{ws}{13.4,3.5}{Amazon-API-Gateway}{API Gateway\\WebSocket}
+  \ico{http}{10.9,1.5}{Amazon-API-Gateway}{API Gateway HTTP}
+  \ico{cog}{13.4,1.5}{Amazon-Cognito}{Cognito}
+  \ico{kvs}{4.9,5.1}{Amazon-Kinesis-Video-Streams}{KVS (signalisation)}
+  % Console web: one entity (S3 origin behind CloudFront), grouped in a light box facing the users.
+  \draw[rounded corners=1.5mm, fill=white, draw=hairline, line width=0.4pt] (11.4,4.4) rectangle (14.4,6.15);
+  \node[lab] at (12.9,5.9) {Console web (React)};
+  \node[inner sep=0] (s3) at (12.3,5.15) {\includegraphics[height=7mm]{icons/Amazon-Simple-Storage-Service.pdf}};
+  \node[inner sep=0] (cf) at (13.5,5.15) {\includegraphics[height=7mm]{icons/Amazon-CloudFront.pdf}};
+  \node[sub] at (12.9,4.6) {hébergée sur S3 + CloudFront};
+  \ico{cw}{5.4,1.3}{Amazon-CloudWatch}{CloudWatch}
+  \ico{sns}{7.2,1.3}{Amazon-Simple-Notification-Service}{SNS alarmes}
+
+  % Users lane: people on their own phone or computer, signed in with Cognito.
+  \node[inner sep=0] (usr) at (17.05,4.75) {\includegraphics[height=7mm]{icons/Res_Users.pdf}};
+  \node[inner sep=0] (mob) at (16.55,3.65) {\includegraphics[height=7mm]{icons/Res_Mobile-client.pdf}};
+  \node[inner sep=0] (pc) at (17.55,3.65) {\includegraphics[height=7mm]{icons/Res_Client.pdf}};
+  \node[lab, anchor=north] (usrl) at (17.05,3.05) {Opérateur · Viewer};
+  \node[sub, below=0pt of usrl] {téléphone ou\\ordinateur personnel};
+
+  % Telemetry (solid): robot to IoT Core, rule to SQS, batch to Lambda, then database and push.
+  \draw[flowT] ([yshift=1.2mm]agent.east) -- ([yshift=1.2mm]iot.west) \mk{1};
+  \draw[flowT] (iot.east) -- node[above, sub]{règle IoT} (sqs.west);
+  \draw[flowT] (sqs.east) -- (8.3,3.5);
+  \draw[flowT] (10,4.15) -- (ddb.south);
+  \draw[flowT] (11.7,3.5) -- (ws.west);
+  \draw[flowT] (ws.east) -- (15.9,3.5);
+
+  % Commands and acknowledgements (dashed): browser to HTTP API, control Lambda to IoT Core, back to the robot.
+  \draw[flowC] (17.05,0.9) -- (17.05,0.5) -- (10.9,0.5) \mk{2} -- (10.9,0.62);
+  \draw[flowC] (10.9,2.2) -- (10.9,2.85);
+  \draw[flowC] (8.7,2.85) -- (8.7,2.35) -- (4.9,2.35) -- (iot.south);
+  \draw[flowC] ([yshift=-1.2mm]iot.west) -- ([yshift=-1.2mm]agent.east);
+  \draw[flowJ] (cog.west) -- node[above, sub]{jeton d'accès} (http.east);
+  \draw[flowJ, {Stealth[length=1.5mm,width=1.1mm]}-{Stealth[length=1.5mm,width=1.1mm]}] (15.9,1.5) -- (cog.east);
+  \node[sub] at (15.25,1.88) {identifiants\\+ TOTP};
+  \draw[flowJ] (cf.east) -- (15.9,5.15);
+  \node[sub] at (15.25,5.53) {charge\\l'application};
+
+  % Video (dotted): peer to peer, KVS only carries the signalling.
+  \draw[flowV] (cam.north) -- (1.45,6.75) -- (17.05,6.75) -- (17.05,5.95);
+  \path (6,6.75) -- (14,6.75) \mk{3};
+  \draw[flowV] (kvs.north) -- (4.9,6.75);
+
+  % Alarms.
+  \draw[flowJ] (cw.east) -- (sns.west);
+
+  % Deployment (light grey): CI to Terraform to AWS.
+  \node[lab, anchor=east] at (3.4,-0.75) {Déploiement};
+  \node[inner sep=0] (gh) at (3.9,-0.75) {\includegraphics[height=5.5mm]{icons/Res_Git-Repository.pdf}};
+  \node[lab, anchor=west] (ghl) at (4.2,-0.75) {GitHub Actions};
+  \node[lab, draw=hairline, rounded corners=1mm, inner sep=2.5pt] (oidc) at (8.4,-0.75) {OIDC · aucune clé longue durée};
+  \node[lab, draw=hairline, rounded corners=1mm, inner sep=2.5pt] (tf) at (12.2,-0.75) {Terraform · plan relu en PR};
+  \draw[flowD] (ghl.east) -- (oidc.west);
+  \draw[flowD] (oidc.east) -- (tf.west);
+  \draw[flowD] (tf.east) -- (14.3,-0.75) -- (14.3,0.1);
+  \node[sub, anchor=west, align=left] at (14.45,-0.4) {déploie l'infra et\\publie la console};
+  \path (ghl.east) -- (oidc.west) \mk{4};
+  % Line-style legend in the free corner under the robots lane.
+  \foreach \y/\st/\txt in {1.95/flowT/télémétrie, 1.6/flowC/commandes, 1.25/flowV/vidéo, 0.9/flowJ/authentification et console, 0.55/flowD/déploiement}{
+    \draw[\st] (0.1,\y) -- (0.75,\y);
+    \node[sub, anchor=west, align=left] at (0.85,\y) {\txt};
+  }
+\end{tikzpicture}

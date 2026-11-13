@@ -1,0 +1,58 @@
+{
+  "pages": {
+    "signIn": "Sign in",
+    "fleet": "Fleet",
+    "robot": "Robot",
+    "alerts": "Alerts",
+    "audit": "Audit",
+    "kpi": "KPI",
+    "site": "Site",
+    "robots": "Robots"
+  },
+  "forbidden": {
+    "title": "Access denied",
+    "body": "Your role does not allow this page."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The address does not match any page of the console."
+  },
+  "status": {
+    "label": "System status",
+    "robotsOnline": "{{count}} online",
+    "robotsUnknown": "Robots: no data yet",
+    "apiLatency": "API answers in {{ms}} ms",
+    "apiDown": "API does not answer",
+    "connection": "Connection: {{state}}"
+  },
+  "role": {
+    "Admin": "Admin",
+    "Operator": "Operator",
+    "Viewer": "Viewer",
+    "none": "No role"
+  },
+  "language": {
+    "label": "Language",
+    "short": {
+      "en": "EN",
+      "fr": "FR"
+    }
+  },
+  "userMenu": {
+    "label": "Account",
+    "signOut": "Sign out"
+  },
+  "dock": {
+    "label": "Main navigation"
+  },
+  "dialog": {
+    "close": "Close"
+  },
+  "shortcut": {
+    "search": "Press / to search robots"
+  },
+  "panel": {
+    "widen": "Widen the panel",
+    "narrow": "Narrow the panel"
+  }
+}

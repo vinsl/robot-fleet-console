@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Styles Fleet Console</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&family=Sora:wght@200;300;400;500;600&display=swap">
+<style>
+/* Layout: three style plates on the validated "Plan" layout. Same screens, same validated state shapes; only palette, typeface and HUD scale change. Page chrome is a fixed dark sheet so colours are judged on their real background. */
+:root {
+  color-scheme: dark;
+  --bg: #0B0C0E; --panel: #131417; --line: #26282D; --t1: #F2F3F5; --t2: #A7ACB3; --t3: #8A9098;
+  --f-ui: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif; --f-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--bg); color: var(--t1); font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 72px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.wrap { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px }
+h1, h2, h3 { margin: 0; text-wrap: balance; line-height: 1.15 }
+h1 { font-size: clamp(28px, 5.5vw, 44px); font-weight: 300; letter-spacing: -0.02em }
+h2 { font-size: clamp(24px, 4vw, 32px); font-weight: 300; letter-spacing: -0.015em }
+h3 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--t3) }
+p { margin: 0; max-width: 66ch }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--t3) }
+.lede { color: var(--t2); font-size: 17px; font-weight: 300 }
+.intro { display: flex; flex-direction: column; gap: 12px }
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line) }
+.tab { font: inherit; text-align: left; border: 1px solid var(--line); background: var(--panel); color: var(--t1); border-radius: 12px; padding: 9px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 1px; min-width: 0 }
+.tab span { font-size: 11px; color: var(--t3); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.tab b { font-weight: 500; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.tab[aria-selected="true"] { border-color: var(--t1); box-shadow: inset 0 0 0 1px var(--t1) }
+button:focus-visible { outline: 2px solid var(--t1); outline-offset: 2px }
+.plate { display: flex; flex-direction: column; gap: 20px }
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap }
+.seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px }
+.seg button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--t2); padding: 6px 14px; border-radius: 999px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--t1); color: var(--bg) }
+.zoom { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--t1); padding: 6px 12px; border-radius: 999px; cursor: pointer }
+.frame { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: #000; position: relative }
+.frame.big { overflow-x: auto }
+.scaler { transform-origin: 0 0; width: 1280px }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.card ul { margin: 0; padding-left: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 5px; color: var(--t2) }
+.sws { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+.sws div { display: flex; flex-direction: column; gap: 3px; min-width: 0 }
+.sws i { height: 30px; border-radius: 7px; border: 1px solid rgba(255,255,255,.14); display: block }
+.sws em { font-style: normal; font-size: 12px } .sws code { font-family: var(--f-mono); font-size: 10.5px; color: var(--t3) }
+.spec { font-size: 30px; line-height: 1.1 }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13.5px } .kv dt { color: var(--t3) } .kv dd { margin: 0; color: var(--t2) }
+.next ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--t2) }
+
+/* ============ Product screen, driven by style tokens set on .scr ============ */
+.scr { width: 1280px; height: 800px; position: relative; overflow: hidden; background: var(--k-bg); color: var(--k-t1); font-family: var(--k-font); font-size: var(--k-fs); line-height: 1.35; font-variant-numeric: tabular-nums; color-scheme: dark }
+.scr.st1 { --k-bg: radial-gradient(120% 90% at 50% 40%, #16181C 0%, #050608 72%); --k-t1: #F2F3F5; --k-t2: rgba(242,243,245,.64); --k-t3: rgba(242,243,245,.46);
+  --k-glass: rgba(22,24,28,.55); --k-edge: rgba(255,255,255,.12); --k-hi: rgba(255,255,255,.10); --k-blur: 26px; --k-acc: #F2F3F5; --k-acc-ink: #0A0B0D;
+  --k-wall: rgba(255,255,255,.5); --k-rack: rgba(255,255,255,.05); --k-rack-l: rgba(255,255,255,.2); --k-grid: rgba(255,255,255,.045);
+  --k-font: "Geist", system-ui, sans-serif; --k-w-num: 300; --k-ls: -0.02em; --k-fs: 13px; --k-ctl: 40px; --k-big: 30px; --k-r: 20px; --k-mk: 20px; --k-pad: 14px }
+.scr.st2 { --k-bg: radial-gradient(120% 90% at 50% 35%, #26214A 0%, #15122B 55%, #0C0A19 100%); --k-t1: #F5ECDD; --k-t2: rgba(245,236,221,.70); --k-t3: rgba(245,236,221,.52);
+  --k-glass: rgba(34,29,64,.55); --k-edge: rgba(245,236,221,.14); --k-hi: rgba(245,236,221,.10); --k-blur: 22px; --k-acc: #F5ECDD; --k-acc-ink: #15122B;
+  --k-wall: rgba(245,236,221,.55); --k-rack: rgba(245,236,221,.05); --k-rack-l: rgba(245,236,221,.2); --k-grid: rgba(245,236,221,.04);
+  --k-font: "Poppins", system-ui, sans-serif; --k-w-num: 300; --k-ls: -0.01em; --k-fs: 14px; --k-ctl: 46px; --k-big: 34px; --k-r: 24px; --k-mk: 24px; --k-pad: 16px }
+.scr.st3 { --k-bg: radial-gradient(130% 100% at 50% 30%, #13202B 0%, #081017 60%, #04070A 100%); --k-t1: #EEF6FA; --k-t2: rgba(238,246,250,.66); --k-t3: rgba(238,246,250,.48);
+  --k-glass: rgba(150,200,230,.10); --k-edge: rgba(190,230,255,.22); --k-hi: rgba(255,255,255,.22); --k-blur: 34px; --k-acc: #9BE3FF; --k-acc-ink: #04121A;
+  --k-wall: rgba(155,227,255,.6); --k-rack: rgba(155,227,255,.05); --k-rack-l: rgba(155,227,255,.25); --k-grid: rgba(155,227,255,.05);
+  --k-font: "Sora", system-ui, sans-serif; --k-w-num: 200; --k-ls: -0.03em; --k-fs: 15px; --k-ctl: 52px; --k-big: 40px; --k-r: 28px; --k-mk: 28px; --k-pad: 18px }
+.scr svg.ic { width: calc(var(--k-fs) + 4px); height: calc(var(--k-fs) + 4px); flex: none }
+.glass { background: var(--k-glass); -webkit-backdrop-filter: blur(var(--k-blur)) saturate(150%); backdrop-filter: blur(var(--k-blur)) saturate(150%); border: 1px solid var(--k-edge); box-shadow: inset 0 1px 0 var(--k-hi), 0 20px 50px rgba(0,0,0,.35) }
+.abs { position: absolute }
+.lbl { font-size: calc(var(--k-fs) - 2px); letter-spacing: .12em; text-transform: uppercase; color: var(--k-t3) }
+.num { font-size: var(--k-big); font-weight: var(--k-w-num); letter-spacing: var(--k-ls); line-height: 1 }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: var(--k-ctl); padding: 0 calc(var(--k-ctl) * .42); border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid var(--k-edge); color: var(--k-t1); white-space: nowrap }
+.btn.pri { background: var(--k-acc); color: var(--k-acc-ink); border-color: transparent; font-weight: 500 }
+.estop { display: flex; align-items: center; justify-content: center; gap: 10px; height: calc(var(--k-ctl) + 12px); border-radius: 999px; background: #D7322B; color: #fff; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: calc(var(--k-fs) - 0px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 10px 30px rgba(215,50,43,.35) }
+.chip { display: inline-flex; align-items: center; gap: 7px; height: calc(var(--k-ctl) * .72); padding: 0 12px 0 9px; border-radius: 99px; background: rgba(255,255,255,.06); border: 1px solid var(--k-edge); white-space: nowrap }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: calc(var(--k-fs) - 2px); letter-spacing: .12em; text-transform: uppercase; background: rgba(0,0,0,.5); padding: 4px 8px; border-radius: 6px }
+.live i { width: 7px; height: 7px; border-radius: 50%; background: #FF5F57; box-shadow: 0 0 10px #FF5F57 }
+.cam { position: absolute; inset: 0; background-size: cover; background-position: center }
+.map .wall { fill: none; stroke: var(--k-wall); stroke-width: 1.4 } .map .rack { fill: var(--k-rack); stroke: var(--k-rack-l); stroke-width: .5 }
+.map .grid { stroke: var(--k-grid); stroke-width: .5 } .map .nogo { fill: rgba(255,95,87,.08); stroke: rgba(255,95,87,.55); stroke-width: .6; stroke-dasharray: 2 1.5 }
+.map .st { fill: none; stroke: var(--k-wall); stroke-width: .8 } .map .chg { fill: none; stroke: #5BD69A; stroke-width: .8 }
+.pin { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 2px }
+.pin .lab { font-size: calc(var(--k-fs) - 3px); color: var(--k-t2); background: rgba(0,0,0,.45); padding: 1px 7px; border-radius: 99px; white-space: nowrap }
+.mk .halo { transform-box: fill-box; transform-origin: center } .mk .pulse { animation: pulse 1.8s ease-out infinite }
+@keyframes pulse { 0% { opacity: .9; transform: scale(1) } 100% { opacity: 0; transform: scale(1.9) } }
+@media (prefers-reduced-motion: reduce) { .mk .pulse { animation: none; opacity: .5 } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <div class="eyebrow">Fleet Console · disposition Plan · états validés</div>
+    <h1>Trois styles pour Plan</h1>
+    <p class="lede">Même écran, mêmes 28 états validés (formes, pictogrammes et couleurs d'état inchangés). Seuls changent le fond et le verre, l'accent, la police et la taille du HUD.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Styles">
+    <button class="tab" role="tab" id="tab-1" data-k="1" aria-controls="plate-1"><span>1 · compact</span><b>Graphite</b></button>
+    <button class="tab" role="tab" id="tab-2" data-k="2" aria-controls="plate-2"><span>2 · moyen</span><b>Nuit</b></button>
+    <button class="tab" role="tab" id="tab-3" data-k="3" aria-controls="plate-3"><span>3 · grand</span><b>Glace</b></button>
+  </div>
+
+  <main id="plates"></main>
+
+  <section class="card next">
+    <h3>Pour avancer</h3>
+    <ol>
+      <li>Tu choisis un style, ou un mélange (par exemple les couleurs de 2 avec la taille de HUD de 1).</li>
+      <li>J'écris l'ADR du design (disposition, états, style) et le fichier de tokens prêt pour l'étape M6.</li>
+      <li>Aucune PR avant ton feu vert.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+function camFrame(W, H) {
+  const c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+  const vx = W * 0.52, vy = H * 0.44;
+  let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  let gr = g.createLinearGradient(0, 0, 0, vy); gr.addColorStop(0, "#15181c"); gr.addColorStop(1, "#2a2e33"); g.fillStyle = gr; g.fillRect(0, 0, W, vy);
+  gr = g.createLinearGradient(0, vy, 0, H); gr.addColorStop(0, "#3b3d3e"); gr.addColorStop(1, "#6b6a66"); g.fillStyle = gr; g.fillRect(0, vy, W, H - vy);
+  const P = (L, Y, t) => [vx + L * t, vy + Y * t];
+  for (let i = 1; i < 9; i++) { const t = Math.pow(0.7, i); const [x, y] = P(0, -H * 0.42, t);
+    const rg = g.createRadialGradient(x, y, 0, x, y, 70 * t); rg.addColorStop(0, "rgba(255,248,230,.95)"); rg.addColorStop(1, "rgba(255,248,230,0)");
+    g.fillStyle = rg; g.fillRect(x - 80 * t, y - 80 * t, 160 * t, 160 * t); }
+  const T = []; for (let j = 0; j < 22; j++) T.push(Math.pow(0.84, j));
+  const levels = [-0.46, -0.27, -0.08, 0.12, 0.3].map(f => f * H), floorY = H * 0.56;
+  for (const L of [-W * 0.40, W * 0.40]) {
+    for (let j = 0; j < T.length - 1; j++) for (let k = 0; k < levels.length; k++) {
+      const top = levels[k] + 6, bot = (levels[k + 1] ?? floorY) - 2;
+      if (rnd() < 0.18) continue;
+      const a = P(L, top + (bot - top) * (0.15 + rnd() * 0.25), T[j]), b = P(L, top + (bot - top) * 0.15, T[j + 1]), cc = P(L, bot, T[j + 1]), d = P(L, bot, T[j]);
+      const shade = 0.55 + rnd() * 0.35, base = rnd() < 0.15 ? [70, 90, 110] : [176, 132, 84];
+      g.fillStyle = `rgb(${base.map(v => Math.round(v * shade * (0.45 + 0.55 * T[j]))).join(",")})`;
+      g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.lineTo(...cc); g.lineTo(...d); g.closePath(); g.fill();
+    }
+    g.strokeStyle = "#c9662a"; for (const Y of levels) { g.lineWidth = 5; g.beginPath(); g.moveTo(...P(L, Y, 1)); g.lineTo(...P(L, Y, 0.02)); g.stroke(); }
+    g.strokeStyle = "#2f5f9a"; for (let j = 0; j < T.length; j += 2) { g.lineWidth = Math.max(1, 9 * T[j]); g.beginPath(); g.moveTo(...P(L, levels[0] - H * .05, T[j])); g.lineTo(...P(L, floorY, T[j])); g.stroke(); }
+  }
+  g.strokeStyle = "rgba(240,200,60,.85)"; for (const L of [-W * 0.2, W * 0.2]) { g.lineWidth = 8; g.beginPath(); g.moveTo(...P(L, floorY, 1.6)); g.lineTo(...P(L, floorY, 0.02)); g.stroke(); }
+  g.fillStyle = "#5a4630"; const pb = [P(-W * 0.07, floorY - 70, 0.42), P(W * 0.07, floorY, 0.42)]; g.fillRect(pb[0][0], pb[0][1], pb[1][0] - pb[0][0], pb[1][1] - pb[0][1]);
+  g.fillStyle = "#b8925f"; g.fillRect(pb[0][0] + 3, pb[0][1] - 60 * 0.42, pb[1][0] - pb[0][0] - 6, 60 * 0.42);
+  const vg = g.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, W * 0.75); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.6)"); g.fillStyle = vg; g.fillRect(0, 0, W, H);
+  const im = g.getImageData(0, 0, W, H); for (let i = 0; i < im.data.length; i += 4) { const n = (rnd() - .5) * 14; im.data[i] += n; im.data[i + 1] += n; im.data[i + 2] += n; } g.putImageData(im, 0, 0);
+  return c.toDataURL("image/jpeg", 0.85);
+}
+
+const P = {
+  navigation: '<polygon points="12 2 19 21 12 17 5 21 12 2"/>',
+  package: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+  idle: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/>',
+  charging: '<path d="M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><path d="M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1"/><path d="m11 7-3 5h4l-3 5"/><line x1="22" x2="22" y1="11" y2="13"/>',
+  pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+  gamepad: '<line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',
+  triangle: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  octagonx: '<polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+  wifioff: '<path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 5.17-2.69"/><path d="M19 12.86a10 10 0 0 0-2.01-1.53"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M22 8.82a15 15 0 0 0-11.29-3.76"/><path d="m2 2 20 20"/>',
+  batterylow: '<rect width="16" height="10" x="2" y="7" rx="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="11" y2="13"/>',
+  eyeoff: '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>',
+  lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  video: '<path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  alertcircle: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
+  loader: '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>',
+  radio: '<circle cx="12" cy="12" r="2"/><path d="M4.93 19.07a10 10 0 0 1 0-14.14"/><path d="M7.76 16.24a6 6 0 0 1 0-8.49"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>',
+  refresh: '<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>',
+  checkcircle: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  gripper: '<path d="M3 21h10"/><path d="M5 21v-1.5a3 3 0 0 1 6 0V21"/><path d="M8.6 16.6 11 8"/><circle cx="11.5" cy="6.5" r="1.5"/><path d="m13 6.2 5.5 1.6"/><path d="M19.5 8v2"/><path d="M17 10h5"/><path d="M17 10v3l1 1"/><path d="M22 10v3l-1 1"/>',
+  hand: '<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
+  flask: '<path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/>'
+};
+const ico = (n, color = "currentColor", sw = 2) => `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+const icoIn = (n, x, y, s, color, sw = 2.4) => `<g transform="translate(${x - s / 2} ${y - s / 2}) scale(${s / 24})" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${P[n]}</g>`;
+
+/* ---------- Robot states: shape + fill style + icon. Shapes: circle, square, triangle, octagon. ---------- */
+const S = {
+  MOVING:   { fr: "En route",        en: "Moving",      v: "--s-moving",   c: "#F2F3F5", shape: "circle",   style: "fill", icon: "navigation", head: true,
+              when: "Se déplace vers une station ou la base.", alert: "—" },
+  WORKING:  { fr: "En mission",      en: "Working",     v: "--s-working",  c: "#F2F3F5", shape: "square",   style: "fill", icon: "gripper",
+              when: "À l'arrêt sur une station, charge ou décharge une palette.", alert: "—" },
+  IDLE:     { fr: "Disponible",      en: "Idle",        v: "--s-idle",     c: "#8E949C", shape: "circle",   style: "hollow", icon: "idle", centerDot: true,
+              when: "Sans mission, prêt à en recevoir une.", alert: "—" },
+  CHARGING: { fr: "En charge",       en: "Charging",    v: "--s-charging", c: "#5BD69A", shape: "circle",   style: "fill", icon: "charging", ring: true,
+              when: "Sur la base de charge (batterie < 20 % → y va seul).", alert: "—" },
+  PAUSED:   { fr: "En pause",        en: "Paused",      v: "--s-paused",   c: "#7FB0FF", shape: "circle",   style: "hollow", icon: "pause",
+              when: "Commande Pause, deadman expiré (1 s sans signal) ou sortie d'arrêt d'urgence.", alert: "—" },
+  TELEOP:   { fr: "Téléopéré",       en: "Teleop",      v: "--s-teleop",   c: "#7FB0FF", shape: "circle",   style: "fill", icon: "hand", head: true, dashed: true,
+              when: "Un opérateur tient le verrou et pilote le robot.", alert: "—" },
+  BLOCKED:  { fr: "Bloqué",          en: "Blocked",     v: "--s-blocked",  c: "#F2B84B", shape: "triangle", style: "fill", icon: "triangle", pulse: true,
+              when: "Obstacle sur le chemin. Sort par Reprendre (cause levée) ou Retour base.", alert: "Majeure" },
+  ESTOP:    { fr: "Arrêt d'urgence", en: "E-stop",      v: "--s-estop",    c: "#FF5F57", shape: "octagon",  style: "fill", icon: "octagonx", pulse: true,
+              when: "Arrêt d'urgence ou collision. Ne sort que par une libération explicite, vers Pause.", alert: "Critique" },
+  OFFLINE:  { fr: "Hors ligne",      en: "Offline",     v: "--s-offline",  c: "#6B7078", shape: "circle",   style: "dashed", icon: "wifioff",
+              when: "Plus de message depuis 15 s, ou connexion MQTT perdue. Position = dernière connue.", alert: "Majeure" }
+};
+
+function shapePath(shape, r) {
+  if (shape === "circle") return `<circle cx="0" cy="0" r="${r}"/>`;
+  if (shape === "square") return `<rect x="${-r * .9}" y="${-r * .9}" width="${r * 1.8}" height="${r * 1.8}" rx="${r * .35}"/>`;
+  if (shape === "triangle") { const h = r * 1.25; return `<path d="M0 ${-h} L${h * 1.02} ${h * .72} L${-h * 1.02} ${h * .72} Z" stroke-linejoin="round"/>`; }
+  if (shape === "octagon") { const a = r * 1.02, b = a * 0.414; return `<polygon points="${-b},${-a} ${b},${-a} ${a},${-b} ${a},${b} ${b},${a} ${-b},${a} ${-a},${b} ${-a},${-b}"/>`; }
+}
+/* size: px of the marker body. mods: array of badge keys. */
+const BADGES = {
+  battery: { icon: "batterylow", c: "#F2B84B" }, sensor: { icon: "eyeoff", c: "#FF5F57" }, lockme: { icon: "lock", c: "#7FB0FF" },
+  lockother: { icon: "user", c: "#A7ACB3" }, camera: { icon: "video", c: "#F2F3F5" }, stale: { icon: "clock", c: "#A7ACB3" }, sim: { icon: "flask", c: "#A7ACB3" }
+};
+function marker(key, { size = 30, heading = -60, mods = [], selected = false, small = false, faded = false } = {}) {
+  const s = S[key], r = 13, pad = small ? 8 : 16, vb = r + pad;
+  const fill = s.style === "fill" ? s.c : "#0F1013", stroke = s.style === "fill" ? "#0A0B0D" : s.c;
+  const sw = s.style === "fill" ? 2 : 3;
+  let g = "";
+  if (selected) g += `<circle r="${r + 6}" fill="none" stroke="#F2F3F5" stroke-width="1.6"/>`;
+  if (s.pulse) g += `<g class="halo pulse" fill="none" stroke="${s.c}" stroke-width="2">${shapePath(s.shape, r)}</g>`;
+  if (s.ring) g += `<circle r="${r + 4.5}" fill="none" stroke="${s.c}" stroke-width="1.6" opacity=".7"/>`;
+  if (s.dashed) g += `<circle r="${r + 5}" fill="none" stroke="${s.c}" stroke-width="1.6" stroke-dasharray="3 3"/>`;
+  if (s.head) g += `<g transform="rotate(${heading})"><path d="M${r + 3} -4.5 L${r + 9} 0 L${r + 3} 4.5 Z" fill="${s.c}"/></g>`;
+  g += `<g fill="${fill}" stroke="${stroke}" stroke-width="${sw}" ${s.style === "dashed" ? 'stroke-dasharray="3.5 3"' : ""}>${shapePath(s.shape, r)}</g>`;
+  if (s.centerDot) g += `<circle r="${small ? 4.5 : 4}" fill="${s.c}"/>`;
+  if (!small && !s.centerDot) {
+    const ic = s.style === "fill" ? "#0A0B0D" : s.c, isz = s.shape === "triangle" ? 12 : s.shape === "square" ? 17 : 14, yoff = s.shape === "triangle" ? 2.5 : 0;
+    const name = s.shape === "triangle" ? null : s.icon;
+    if (name) g += s.head && name === "navigation" ? `<g transform="rotate(${heading + 90})">${icoIn(name, 0, yoff, isz, ic, 2.4)}</g>` : icoIn(name, 0, yoff, isz, ic, 2.4);
+    else g += `<path d="M0 -3 V3.5 M0 8 v.01" stroke="${ic}" stroke-width="3" stroke-linecap="round" transform="translate(0 0)"/>`;
+  }
+  if (!small) {
+    mods.forEach((m, i) => { const b = BADGES[m], bx = r * .85 + i * 0, by = -r * .85 - i * 15;
+      g += `<g transform="translate(${bx + 2} ${by})"><circle r="7.5" fill="#0F1013" stroke="${b.c}" stroke-width="1.4"/>${icoIn(b.icon, 0, 0, 9, b.c, 2.6)}</g>`; });
+  }
+  const ext = small ? vb : vb + 6;
+  return `<svg class="mk" width="${size * (ext * 2) / (r * 2)}" height="${size * (ext * 2) / (r * 2)}" viewBox="${-ext} ${-ext} ${ext * 2} ${ext * 2}" style="${faded ? "opacity:.55" : ""}" aria-hidden="true">${g}</svg>`;
+}
+
+const CAM = camFrame(960, 600);
+const STYLES = [
+  { id: 1, name: "Graphite", sub: "Tesla, compact",
+    idea: "Noir neutre, verre fumé discret, accent blanc. Le plus sobre : la couleur ne vient que des états. Texte petit et contrôles compacts, beaucoup de carte visible.",
+    sw: [["Fond", "#050608 → #16181C"], ["Verre", "noir 55 %"], ["Texte", "#F2F3F5"], ["Accent", "#F2F3F5"], ["Bordure", "blanc 12 %"], ["Rayon", "20 px"]],
+    swc: ["#0E0F12", "rgba(22,24,28,.9)", "#F2F3F5", "#F2F3F5", "rgba(255,255,255,.12)", null],
+    font: "Geist", fontNote: "Sans moderne et neutre, chiffres fins (300).", hud: [["Texte de base", "13 px"], ["Boutons", "40 px de haut"], ["Chiffres clés", "30 px"], ["Marqueurs", "24 px"]],
+    pros: ["Le plus proche de l'écran Tesla.", "Les couleurs d'état ressortent au maximum.", "Le plus de carte visible."],
+    cons: ["Petit au doigt sur téléphone (40 px reste au-dessus du minimum de 24 px, mais juste pour un usage rapide).", "Peut paraître froid ou générique."] },
+  { id: 2, name: "Nuit", sub: "indigo et crème, moyen",
+    idea: "Reprend l'ambiance du logo que tu m'as montré : fond indigo nuit, texte crème chaud, police géométrique arrondie proche de celle du logo. Verre teinté indigo. Taille intermédiaire.",
+    sw: [["Fond", "#0C0A19 → #26214A"], ["Verre", "indigo 55 %"], ["Texte", "#F5ECDD"], ["Accent", "#F5ECDD"], ["Bordure", "crème 14 %"], ["Rayon", "24 px"]],
+    swc: ["#15122B", "rgba(34,29,64,.9)", "#F5ECDD", "#F5ECDD", "rgba(245,236,221,.14)", null],
+    font: "Poppins", fontNote: "Géométrique arrondie, proche du logo. ", hud: [["Texte de base", "14 px"], ["Boutons", "46 px de haut"], ["Chiffres clés", "34 px"], ["Marqueurs", "28 px"]],
+    pros: ["Chaleureux, moins « tableau de bord générique ».", "Bon compromis bureau et téléphone."],
+    cons: ["L'indigo réduit un peu le contraste du bleu « humain » (reste AA).", "Couleurs à confirmer."] },
+  { id: 3, name: "Glace", sub: "Vision Pro, grand",
+    idea: "Verre clair très transparent sur fond bleu nuit, reflets marqués, accent bleu glace. Police large et futuriste, chiffres très fins. Grande taille : pensée pour le doigt, le téléphone en 4G de la démo et un écran mural.",
+    sw: [["Fond", "#04070A → #13202B"], ["Verre", "bleu clair 10 %"], ["Texte", "#EEF6FA"], ["Accent", "#9BE3FF"], ["Bordure", "glace 22 %"], ["Rayon", "28 px"]],
+    swc: ["#0A141C", "rgba(150,200,230,.25)", "#EEF6FA", "#9BE3FF", "rgba(190,230,255,.22)", null],
+    font: "Sora", fontNote: "Large et technique, chiffres extra-fins (200).", hud: [["Texte de base", "15 px"], ["Boutons", "52 px de haut"], ["Chiffres clés", "40 px"], ["Marqueurs", "34 px"]],
+    pros: ["Le plus « vitrifié » et le plus spectaculaire.", "Le plus confortable au doigt et de loin.", "Accent glace cohérent avec l'idée de caméra et de vision."],
+    cons: ["Moins de carte visible : panneaux et marqueurs plus gros.", "Le verre très transparent demande un fond calme pour rester lisible.", "Le bleu glace est proche du bleu « humain » des états : à surveiller."] }
+];
+
+/* map + projection (plane: 1160×640 at left 60, top 100, rotateX 42°, perspective 1100) */
+const ROB = [["R-05", "MOVING", 92, 125, 0, []], ["R-09", "WORKING", 371, 117, 0, []], ["R-12", "IDLE", 330, 75, 0, []], ["R-10", "CHARGING", 34, 207, 0, []],
+  ["R-08", "PAUSED", 62, 175, 0, ["lockother"]], ["R-01", "TELEOP", 120, 75, 0, ["lockme", "camera"]], ["R-03", "BLOCKED", 212, 125, 180, []], ["R-07", "ESTOP", 282, 175, 0, []],
+  ["R-11", "OFFLINE", 176, 75, 0, []], ["R-04", "MOVING", 282, 75, 0, ["battery"]], ["R-06", "MOVING", 334, 150, 90, []]];
+function mapSvg() {
+  let g = ""; for (let x = 0; x <= 400; x += 20) g += `<line class="grid" x1="${x}" y1="0" x2="${x}" y2="240"/>`; for (let y = 0; y <= 240; y += 20) g += `<line class="grid" x1="0" y1="${y}" x2="400" y2="${y}"/>`;
+  let r = ""; for (const y of [45, 95, 145]) for (const [x, w] of [[55, 100], [165, 100], [275, 50]]) r += `<rect class="rack" x="${x}" y="${y}" width="${w}" height="18" rx="1"/>`;
+  return `<svg class="map" viewBox="0 0 400 240" preserveAspectRatio="none" style="width:100%;height:100%">${g}<path class="wall" d="M10 10 H390 V230 H230 M200 230 H10 Z"/>${r}<rect class="nogo" x="150" y="188" width="70" height="32"/>${[28, 108, 188].map(y => `<rect class="st" x="362" y="${y}" width="18" height="18" rx="2"/>`).join("")}<rect class="chg" x="22" y="196" width="24" height="22" rx="2"/></svg>`;
+}
+function plane(sel, mk) {
+  const W = 1160, H = 640, TH = 42 * Math.PI / 180, D = 1100;
+  const pins = ROB.map(([n, k, x, y, h, mods]) => {
+    const X = x / 400 * W - .5 * W, Y = y / 240 * H - .4 * H, z = Y * Math.sin(TH), s = D / (D - z);
+    const sx = .5 * W + X * s + 60, sy = .5 * H + (.4 * H + Y * Math.cos(TH) - .5 * H) * s + 100;
+    return `<div class="pin" style="left:${sx}px;top:${sy}px;transform:translate(-50%,-50%) scale(${Math.min(1.2, Math.max(.75, s)).toFixed(2)})">${marker(k, { size: mk, heading: h, mods, selected: n === sel })}<span class="lab">${n}</span></div>`;
+  }).join("");
+  return `<div class="abs" style="left:60px;top:100px;width:1160px;height:640px;perspective:1100px"><div style="width:100%;height:100%;transform:rotateX(42deg);transform-origin:50% 40%">${mapSvg()}</div></div>${pins}`;
+}
+const ic = (n, c = "currentColor") => ico(n, c).replace("<svg ", '<svg class="ic" ');
+const chipS = (k, txt) => { const s = S[k]; return `<span class="chip">${ic(s.icon, s.c)}${txt || s.fr}</span>`; };
+
+function fleet(st) { const mk = { 1: 24, 2: 28, 3: 34 }[st.id];
+  return `<div class="scr st${st.id}">${plane("R-03", mk)}
+  <div class="abs" style="left:0;right:0;top:0;height:130px;background:linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0))"></div>
+  <div class="abs" style="left:40px;right:40px;top:26px;display:flex;align-items:center;gap:22px;color:var(--k-t2)">
+    <span style="color:var(--k-t1);font-size:calc(var(--k-fs) + 3px);font-weight:500">Lyon-Nord</span><span>15:31</span>
+    <span style="display:inline-flex;gap:6px;align-items:center;color:#5BD69A">${ic("radio", "#5BD69A")}Temps réel</span><span>10 / 11 en ligne</span><span style="margin-left:auto">Opérateur · FR</span></div>
+  <div class="abs glass" style="left:50%;transform:translateX(-50%);top:72px;border-radius:999px;padding:6px 6px 6px 8px;display:flex;align-items:center;gap:12px">
+    <span class="chip" style="background:#F2B84B;color:#0A0B0D;border-color:#F2B84B">${ic("triangle", "#0A0B0D")}Majeure</span><span>R-03 bloqué dans l'allée C</span><span style="color:var(--k-t3)">12 s</span><span class="btn pri" style="height:calc(var(--k-ctl) * .8)">Voir</span></div>
+  <div class="abs glass" style="left:50%;transform:translateX(-50%);bottom:26px;border-radius:999px;padding:8px;display:flex;gap:4px">
+    ${[["radio", "Flotte", 1], ["triangle", "Alertes"], ["refresh", "KPI"], ["clock", "Audit"], ["gripper", "Robots"]].map(([n, l, on]) => `<span class="btn" style="${on ? "background:var(--k-acc);color:var(--k-acc-ink);border-color:transparent" : "background:transparent;border-color:transparent;color:var(--k-t2)"}">${ic(n)}${l}</span>`).join("")}</div>
+  <div class="abs" style="left:40px;bottom:40px;display:flex;flex-direction:column;gap:6px"><span class="num">96,4 %</span><span class="lbl">Disponibilité</span></div>
+  <div class="abs" style="right:40px;bottom:40px;display:flex;flex-direction:column;gap:6px;align-items:flex-end"><span class="num">38</span><span class="lbl">Missions / h</span></div>
+</div>`; }
+
+function robot(st) { const mk = { 1: 24, 2: 28, 3: 34 }[st.id], w = { 1: 400, 2: 430, 3: 470 }[st.id];
+  return `<div class="scr st${st.id}">${plane("R-01", mk)}
+  <div class="abs" style="left:0;right:0;top:0;height:130px;background:linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0))"></div>
+  <div class="abs" style="left:40px;top:26px;display:flex;align-items:center;gap:18px;color:var(--k-t2)"><span style="color:var(--k-t1);font-size:calc(var(--k-fs) + 3px);font-weight:500">Lyon-Nord</span><span>Flotte / R-01</span></div>
+  <div class="abs glass" style="right:22px;top:22px;bottom:22px;width:${w}px;border-radius:var(--k-r);padding:var(--k-pad);display:flex;flex-direction:column;gap:calc(var(--k-pad) * .9)">
+    <div style="position:relative;height:${w * .56}px;border-radius:calc(var(--k-r) - 8px);overflow:hidden;flex:none"><div class="cam" style="background-image:url(${CAM})"></div><div class="abs" style="left:12px;top:12px"><span class="live"><i></i>Direct · 212 ms</span></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="num" style="font-size:calc(var(--k-big) * .9)">R-01</span>${chipS("TELEOP")}</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${[["Vitesse", "0,6", "m/s"], ["Batterie", "66", "%"], ["Latence", "143", "ms"]].map(([l, v, u]) => `<div style="display:flex;flex-direction:column;gap:4px"><span class="num" style="font-size:calc(var(--k-big) * .72)">${v}<span style="font-size:calc(var(--k-fs) - 1px);color:var(--k-t2);letter-spacing:0"> ${u}</span></span><span class="lbl">${l}</span></div>`).join("")}</div>
+    <div style="display:flex;align-items:center;gap:8px;color:var(--k-t2)">${ic("lock", "#7FB0FF")}Contrôle : toi · expire dans 28 s</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto">${[["pause", "Pause"], ["navigation", "Reprendre"], ["charging", "Retour base"], ["user", "Libérer"]].map(([n, l]) => `<span class="btn">${ic(n)}${l}</span>`).join("")}</div>
+    <div class="estop">${ic("octagonx", "#fff")}Arrêt d'urgence</div>
+  </div>
+</div>`; }
+
+function plateHtml(st) {
+  return `<section class="plate" id="plate-${st.id}" role="tabpanel" aria-labelledby="tab-${st.id}">
+    <div class="intro"><div class="eyebrow">Style ${st.id} · ${st.sub}</div><h2>${st.name}</h2><p>${st.idea}</p></div>
+    <div class="bar"><div class="seg" role="group" aria-label="Page"><button type="button" data-v="0" aria-pressed="true">Page Flotte</button><button type="button" data-v="1" aria-pressed="false">Page Robot</button></div><button type="button" class="zoom" aria-pressed="false">Agrandir</button></div>
+    <div class="frame"><div class="scaler"></div></div>
+    <div class="cols">
+      <div class="card"><h3>Couleurs</h3><div class="sws">${st.sw.map(([n, v], i) => `<div>${st.swc[i] ? `<i style="background:${st.swc[i]}"></i>` : `<i style="background:transparent;border-radius:${v}"></i>`}<em>${n}</em><code>${v}</code></div>`).join("")}</div></div>
+      <div class="card"><h3>Police</h3><span class="spec" style="font-family:'${st.font}',sans-serif;font-weight:300">R-03 bloqué · 96,4 %</span><span style="font-family:'${st.font}',sans-serif">${st.font}</span><p style="font-size:13.5px;color:var(--t2)">${st.fontNote}</p></div>
+      <div class="card"><h3>Taille du HUD</h3><dl class="kv">${st.hud.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl></div>
+    </div>
+    <div class="cols"><div class="card"><h3>Pour</h3><ul>${st.pros.map(x => `<li>${x}</li>`).join("")}</ul></div><div class="card"><h3>Contre</h3><ul>${st.cons.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
+  </section>`;
+}
+document.getElementById("plates").innerHTML = STYLES.map(plateHtml).join("");
+function fit(sec) {
+  const fr = sec.querySelector(".frame"), sc = sec.querySelector(".scaler"), big = fr.classList.contains("big");
+  const k = big ? Math.max(fr.clientWidth / 1280, 0.62) : fr.clientWidth / 1280;
+  sc.style.transform = `scale(${k})`; fr.style.height = (800 * k) + "px"; sc.style.marginRight = big ? `${1280 * k - 1280}px` : "0";
+}
+function render(sec, v) { const st = STYLES[+sec.id.split("-")[1] - 1];
+  sec.querySelector(".scaler").innerHTML = v ? robot(st) : fleet(st);
+  sec.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.v === v))); fit(sec); }
+document.querySelectorAll(".plate").forEach(sec => { render(sec, 0);
+  sec.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => render(sec, +b.dataset.v)));
+  const z = sec.querySelector(".zoom"); z.addEventListener("click", () => { const fr = sec.querySelector(".frame"); fr.classList.toggle("big"); const on = fr.classList.contains("big"); z.setAttribute("aria-pressed", String(on)); z.textContent = on ? "Réduire" : "Agrandir"; fit(sec); }); });
+function show(k) { if (!["1", "2", "3"].includes(k)) k = "1";
+  document.querySelectorAll(".plate").forEach(p => p.hidden = p.id !== "plate-" + k);
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === k)));
+  const sec = document.getElementById("plate-" + k); if (sec) fit(sec); }
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => { if (location.hash !== "#s" + t.dataset.k) location.hash = "s" + t.dataset.k; else show(t.dataset.k); }));
+window.addEventListener("hashchange", () => show(location.hash.replace("#s", "")));
+window.addEventListener("resize", () => document.querySelectorAll(".plate:not([hidden])").forEach(fit));
+show(location.hash.replace("#s", ""));
+</script>
+
+</html>

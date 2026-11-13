@@ -1,0 +1,14 @@
+{
+  "robot": {
+    "robotId": "kali-01",
+    "siteId": "paris-01",
+    "name": "Kali robot",
+    "type": "AMR-7",
+    "designDate": "2026-10-30",
+    "simulated": false,
+    "status": "GONE",
+    "createdAt": "2026-11-01T09:00:00.000Z",
+    "retiredAt": "2026-11-01T12:00:00.000Z"
+  },
+  "alreadyRetired": false
+}

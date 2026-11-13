@@ -1,0 +1,98 @@
+# Posts the Terraform plan of infra/envs/demo as a PR comment. Never applies.
+# Uses a read-only OIDC role; the state is read without taking the lock.
+name: Terraform plan
+
+on:
+  pull_request:
+    paths:
+      - "infra/**"
+      - "services/**"
+      - "packages/protocol/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tfplan-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: Terraform plan
+    # Skipped until the read-only plan role is configured, so no OIDC token is requested before then.
+    if: vars.AWS_PLAN_ROLE_ARN != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      # Checkout of the pull request code.
+      contents: read
+      # OIDC exchange with the read-only plan role; no long-lived AWS keys.
+      id-token: write
+      # Posts or updates the plan comment on the pull request.
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile && pnpm --filter @mfc/api build
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~1.17"
+          terraform_wrapper: false
+      - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: tfplan-${{ github.run_id }}
+          mask-aws-account-id: true
+      - name: Plan
+        id: plan
+        working-directory: infra/envs/demo
+        run: |
+          terraform init -input=false
+          set +e
+          terraform plan -input=false -lock=false -no-color -out=tfplan > plan.txt 2>&1
+          echo "exitcode=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          terraform show -no-color tfplan > plan-full.txt 2>/dev/null || cp plan.txt plan-full.txt
+          terraform show -json tfplan 2>/dev/null \
+            | jq -r '[.resource_changes[]? | select(.change.actions | index("delete")) | .address] | join(", ")' \
+            > destroys.txt || true
+      - name: Comment plan on the PR
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PLAN_EXIT: ${{ steps.plan.outputs.exitcode }}
+        with:
+          script: |
+            const fs = require('fs');
+            const dir = 'infra/envs/demo/';
+            // A 12-digit number is an AWS account id; the comment is visible to every reader of the PR.
+            const maskAccountIds = (text) => text.replace(/\b\d{12}\b/g, '************');
+            const plan = maskAccountIds(fs.readFileSync(dir + 'plan-full.txt', 'utf8'));
+            const destroys = maskAccountIds(fs.existsSync(dir + 'destroys.txt') ? fs.readFileSync(dir + 'destroys.txt', 'utf8').trim() : '');
+            const max = 60000;
+            const body = [
+              '<!-- tfplan -->',
+              `### Terraform plan — ${process.env.PLAN_EXIT === '0' ? '✅ success' : '❌ failed'}`,
+              destroys ? `> ⚠️ **Resources deleted or replaced:** ${destroys}. The deploy workflow will refuse this plan unless re-run manually with \`allow_destroy=true\`.` : '> No resource deleted or replaced.',
+              '<details><summary>Show plan</summary>',
+              '',
+              '```',
+              plan.length > max ? plan.slice(0, max) + '\n... truncated' : plan,
+              '```',
+              '</details>',
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({ ...context.repo, issue_number: context.issue.number });
+            const previous = comments.find(c => c.body.startsWith('<!-- tfplan -->'));
+            if (previous) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: previous.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+            }
+      - if: steps.plan.outputs.exitcode != '0'
+        run: exit 1

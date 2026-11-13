@@ -1,0 +1,6 @@
+{
+  "type": "urn:mfc:problem:internal",
+  "title": "Internal error",
+  "status": 500,
+  "correlationId": "corr-0001-abcd"
+}

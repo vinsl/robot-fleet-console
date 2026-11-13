@@ -1,0 +1,28 @@
+/* Versions list of the site sheet. Every value is a token from tokens.css; no colour, size or radius is written here. */
+.scroll {
+  max-height: calc(var(--control-h) * 10);
+  overflow: auto;
+  border-radius: var(--radius-inner);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.active {
+  color: var(--state-nominal);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.icon {
+  flex: none;
+}

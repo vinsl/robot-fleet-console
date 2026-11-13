@@ -1,0 +1,10 @@
+# ZAP baseline rule overrides: <rule id>	<IGNORE|WARN|FAIL>	<reason>
+# Every IGNORE needs a reason and a link to the threat model.
+10096	IGNORE	Build timestamp in hashed asset names carries no secret or personal data (ADR 0070, docs/security/THREAT_MODEL.md)
+90004	IGNORE	Cross-Origin-Embedder-Policy only matters for cross-origin isolation (SharedArrayBuffer), which the console does not use; require-corp would risk breaking third-party subresources for no gain (ADR 0070, docs/security/THREAT_MODEL.md)
+10036	IGNORE	The Server header of the CloudFront origin only says AmazonS3: no version, and the stack is public in the README (ADR 0070, docs/security/THREAT_MODEL.md)
+120000	IGNORE	The only localStorage key is mfc.lang, the interface language: not sensitive; tokens stay in memory (ADR 0045, docs/security/THREAT_MODEL.md)
+10109	IGNORE	Informational: the console is a single-page application, which ZAP reports as a Modern Web Application (ADR 0070)
+10015	IGNORE	Informational: cache directives of the static assets are set on purpose, hashed assets are immutable and index.html is revalidated (ADR 0046, ADR 0070)
+10049	IGNORE	Informational: static hashed assets are cacheable on purpose, nothing personal is served by the CDN (ADR 0046, ADR 0070)
+10050	IGNORE	Informational: a cached copy served by CloudFront is expected for static assets (ADR 0046, ADR 0070)

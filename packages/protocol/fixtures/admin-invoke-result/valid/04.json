@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "status": 502,
+  "problem": {
+    "type": "urn:mfc:problem:provisioning-failed",
+    "title": "Provisioning failed",
+    "status": 502,
+    "correlationId": "corr-0001-abcd"
+  }
+}

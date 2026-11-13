@@ -1,0 +1,56 @@
+{
+  "title": "Alerts",
+  "tabs": {
+    "active": "Active",
+    "history": "History (24 h)"
+  },
+  "filter": {
+    "severity": "Severity",
+    "all": "All",
+    "robot": "Robot"
+  },
+  "kind": {
+    "ESTOP": "{{robot}} in e-stop",
+    "BLOCKED": "{{robot}} blocked",
+    "OFFLINE": "{{robot}} offline",
+    "LOW_BATTERY": "{{robot}} battery low"
+  },
+  "cause": "Cause: {{cause}}",
+  "openedAgo": "{{age}} ago",
+  "acknowledge": "Acknowledge",
+  "resolve": "Resolve",
+  "acknowledgedBy": "Acknowledged by {{who}}, {{age}} ago",
+  "resolvedAfter": "Resolved by {{who}} after {{duration}}",
+  "you": "you",
+  "operator": "operator {{id}}",
+  "readOnly": "Viewers can read alerts but not change them.",
+  "empty": {
+    "active": "No open alert.",
+    "history": "No alert resolved in the last 24 h."
+  },
+  "loadMore": "Load more",
+  "loading": "Loading alerts…",
+  "error": {
+    "load": "Alerts could not be loaded.",
+    "action": "The alert could not be updated.",
+    "conflict": "The alert changed meanwhile. The list was refreshed.",
+    "notFound": "This alert no longer exists."
+  },
+  "pill": {
+    "view": "View",
+    "count_one": "{{count}} open alert",
+    "count_other": "{{count}} open alerts",
+    "openSheet": "Open alerts"
+  },
+  "sound": {
+    "on": "Alert sound on",
+    "muted": "Alert sound muted",
+    "blocked": "Click to enable alert sound"
+  },
+  "announce": {
+    "CRITICAL": "Critical alert: {{message}}",
+    "MAJOR": "Major alert: {{message}}"
+  },
+  "dockCount_one": "{{count}} open",
+  "dockCount_other": "{{count}} open"
+}

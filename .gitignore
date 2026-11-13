@@ -1,0 +1,68 @@
+# Dependencies and builds
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+playwright-report/
+test-results/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Terraform
+.terraform/
+.terraform-check/
+# Deployment archives packed by the lambda-function module (built from services/api/dist)
+infra/envs/demo/.build/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+plan*.txt
+crash.log
+*.auto.tfvars
+override.tf
+override.tf.json
+
+# Secrets and robot identities: never in the repo
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+robot-kit*/
+# The protocol fixtures of the kit configuration hold placeholders only, never a key.
+!packages/protocol/fixtures/robot-kit-config/
+**/kits/
+.fleet/
+
+# DXF uploads are converted in the browser and never stored
+*.dxf
+# Committed generated sample (agent/tools/make_sample_dxf.py), licence in agent/tools/sample/README.md
+!agent/tools/sample/*.dxf
+
+# Local assistant configuration, kept on the developer machine only
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+
+# OS / editors
+.DS_Store
+*.swp
+
+# Runtime configuration written by the publish step; it holds deployment identifiers, never commit it.
+apps/console/public/config.json
+
+# Editor settings
+.vscode/
+
+docs/report/overleaf/main_fr.pdf

@@ -1,0 +1,22 @@
+/* Placeholder of the video: a 16:9 inner surface, as DESIGN 2.2 lays out the live video. */
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  aspect-ratio: 16 / 9;
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+}
+
+.icon {
+  width: var(--space-5);
+  height: var(--space-5);
+}
+
+.text {
+  font-size: var(--text-sm);
+}

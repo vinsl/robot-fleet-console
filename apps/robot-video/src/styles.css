@@ -1,0 +1,128 @@
+@import "../../console/src/theme/tokens.css";
+
+/*
+ * Styles of the video page. Every colour, font, size, radius and duration comes from the console
+ * tokens (ADR 0037); layout uses rem and fr only. The page has no animation, so nothing needs to
+ * switch off for reduced motion. Every state is also carried by its text and its shape.
+ */
+
+body {
+  margin: 0;
+}
+
+main {
+  padding: var(--space-4);
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-number);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 0.125rem solid var(--focus-ring);
+  outline-offset: 0.125rem;
+}
+
+/* Control banner: e-stop and teleoperation. The accent is set per kind from the banner mapping. */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+}
+
+.banner[data-kind="ESTOP"],
+.banner[data-kind="TELEOP"] {
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  box-shadow: inset 0 -0.125rem 0 var(--banner-accent);
+}
+
+.banner[data-kind="ESTOP"] .banner-icon,
+.banner[data-kind="TELEOP"] .banner-icon {
+  color: var(--banner-accent);
+}
+
+.banner-icon {
+  width: var(--marker);
+  height: var(--marker);
+  flex: none;
+}
+
+#status {
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+  min-height: 1.4em;
+}
+
+#status[data-state="ok"] {
+  color: var(--state-charging);
+}
+
+#status[data-state="error"] {
+  color: var(--state-estop);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0;
+}
+
+.tags li {
+  border: 0.0625rem solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.meta {
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+video {
+  display: block;
+  width: 100%;
+  background: var(--bg-base);
+  border-radius: var(--radius-inner);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-3);
+}
+
+button {
+  min-height: var(--control-h);
+  min-width: var(--control-h);
+  padding: 0 var(--space-4);
+  border: 0.0625rem solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: var(--glass-fill);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+#stop {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}

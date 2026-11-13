@@ -1,0 +1,156 @@
+% Fleet Console: two-page project report (French). Compile with XeTeX: tectonic -X compile main_fr.tex
+\documentclass[9pt,a4paper]{extarticle}
+\usepackage[french]{babel}
+\input{style}
+
+\begin{document}
+\sloppy
+
+% ---------- Header ----------
+\noindent{\fontsize{22}{24}\selectfont\mediumfont Interface de contrôle d'une flotte de robots}\\[1mm]
+{\fontsize{10}{12}\selectfont\itshape Superviser, téléopérer et mesurer une flotte de robots logistiques déjà déployée}\\[1.6mm]
+{\fontsize{7.5}{9}\selectfont Vincent Lucas ·
+\href{https://www.linkedin.com/in/vincent-lucas-483b29295/}{\underline{LinkedIn}} ·
+\href{https://github.com/vinsl/robot-fleet-console}{\underline{Code source}}\\
+\color{secondary}Projet personnel effectué du 30 octobre au 5 novembre 2026}
+
+% ---------- Contexte ----------
+\rsection{Contexte}
+\noindent\begin{minipage}[t]{0.50\linewidth}\vspace{0pt}
+  \fontsize{8.7}{10.3}\selectfont
+  Une flotte de robots logistiques autonomes travaille déjà chez des clients, mais aucun outil ne la rend encore visible et pilotable à distance. Ce projet propose une réponse complète, de l'infrastructure à l'interface, déployée sur AWS et testée de bout en bout. Le viewer, par exemple le responsable du site client, suit la flotte en lecture seule. L'opérateur reçoit les alertes et prend la main sur un robot depuis son téléphone ou son ordinateur.\par\vspace{1mm}
+  La CI/CD et les contrôles de sécurité ont précédé le code produit. J'ai ensuite conçu l'infrastructure, designé le code et piloté des agents IA spécialisés en code, tests et revue de sécurité. Chaque décision est consignée dans l'un des 69 ADR, et chaque PR passe la CI et une revue avant fusion.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\vspace{0pt}
+  \renewcommand{\shotzoom}{1}\renewcommand{\shotratio}{0.464}\shot{fleet-view.png}{\linewidth}{Vue flotte en direct, 9 robots en ligne}
+\end{minipage}
+
+% ---------- Périmètre ----------
+\rsection{Périmètre du projet}
+\noindent\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  {\mediumfont Inclus}\par\vspace{0.6mm}
+  \begin{itemize}
+    \item Proposer une architecture cloud sécurisée, déployée à partir du code.
+    \item Superviser une flotte et la téléopérer en sécurité, avec verrou, deadman et arrêt d'urgence.
+    \item Garder la trace de chaque alerte, commande et prise de contrôle pour l'audit et les KPI.
+  \end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  {\mediumfont Exclus}\par\vspace{0.6mm}
+  \begin{itemize}
+    \item Déplacer de vrais robots : l'agent réel tourne sur une VM et le reste de la flotte est simulé.
+    \item Prendre le contrôle d'un vrai robot : les pannes sont simulées et la console donne accès à leur résolution. Il resterait à relier l'agent au robot.
+    \item Pousser la simulation : elle sert seulement à valider l'interface.
+  \end{itemize}
+\end{minipage}
+
+% ---------- Infrastructure ----------
+\rsection{Infrastructure}
+\noindent\input{figures/architecture}\par\vspace{0.3mm}
+{\fontsize{7.5}{9}\selectfont\color{grey}
+\textbf{\color{ink}1} télémétrie de 0,5 à 2 Hz, lots de 100 ou 1 s \quad
+\textbf{\color{ink}2} commande, cible p95 < 500 ms \quad
+\textbf{\color{ink}3} vidéo WebRTC peer to peer \quad
+\textbf{\color{ink}4} 8 min du merge à la production}
+\par\vspace{0.8mm}
+
+\noindent\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  \begin{itemize}
+    \item AWS fournit des briques éprouvées pour une flotte, comme IoT Core et l'identité X.509 de chaque robot. Le protocole entre robots et cloud est versionné et validé aux deux bouts, et la logique métier est testée sans AWS.
+    \item Tout est décrit en Terraform. Un merge atteint la production en 8 minutes, et un robot ou un site s'ajoute sans toucher au code.
+    \item Pour 20 robots actifs 12 h par jour, l'estimation est de 65~\$ par mois, soit 3~\$ par robot. Au repos, la plateforme coûte moins de 5~\$ par mois, et tout le développement a coûté 0,16~\$.
+    \item Les mesures arrivent par lots et les positions vont droit aux écrans par WebSocket. DynamoDB garde l'état, les alertes 90 jours et l'audit un an, et 37 alarmes surveillent les erreurs.
+  \end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \begin{choixtable}
+    \choix{Langages}{TypeScript, Python}{types partagés, Python côté robot}{tout en TypeScript, loin de la robotique}
+    \choix{Back end}{fonctions Lambda}{aucun serveur, coût à l'usage}{Fargate, facturé sans trafic}
+    \choix{Robots}{IoT Core, MQTT}{identité X.509 par robot}{broker auto-hébergé à sécuriser soi-même}
+    \choix{Données}{DynamoDB}{accès par clé, à la demande}{Aurora Serverless, coût plancher}
+    \choix{Déploiement}{AWS, Terraform}{plan relu en PR, rejouable}{CDK, lié à CloudFormation}
+  \end{choixtable}
+\end{minipage}
+
+\difficulte{}{La CI ne pouvait pas s'authentifier auprès d'AWS}{Le job de plan Terraform échouait 12 fois de suite. GitHub signe ses jetons OIDC avec les identifiants numériques du dépôt, alors que la confiance IAM attendait son nom. Réécrite sur l'identifiant immuable et sans joker, elle passe. Je vérifie désormais le réglage réel avant la documentation.}
+
+\newpage
+% ---------- Sécurité ----------
+\rsection{Sécurité}
+\noindent\begin{minipage}[c]{0.70\linewidth}
+  \input{figures/safety}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.28\linewidth}\raggedleft
+  \includegraphics[width=0.95\linewidth]{images/zap-summary.png}\\[0.6mm]
+  {\fontsize{6.5}{7.8}\selectfont\color{secondary}OWASP ZAP 2.17, scan baseline, 4 novembre 2026}
+\end{minipage}\par\vspace{2mm}
+\noindent\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  \begin{itemize}
+    \item Les comptes sont créés par un administrateur et chaque rôle passe par un TOTP. Aucune clé AWS longue durée n'existe : SSO pour les humains, OIDC pour la CI, X.509 pour les robots.
+    \item Chaque Lambda a son propre rôle IAM, et un robot ne publie que sur ses propres topics, ce qui a été vérifié en réel.
+    \item Un seul opérateur pilote un robot et son verrou expire après 30 s d'inactivité. Le deadman du robot le met en pause après 1 s sans battement, même réseau coupé.
+    \item L'arrêt d'urgence passe avant tout, mais reste logiciel et complète une sécurité matérielle. Le modèle STRIDE recense 71 menaces, et au moins 51 tests vérifient des accès refusés.
+  \end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \begin{choixtable}
+    \choix{Utilisateurs}{Cognito, MFA TOTP}{non contournable}{MFA géré par l'application, contournable par oubli}
+    \choix{Robots}{X.509, politique IoT}{un seul document à auditer}{une politique par robot}
+    \choix{Contrôle}{verrou dans le cloud}{invisible au navigateur}{jeton côté client, exposé à un script}
+    \choix{Règles}{machine d'états partagée}{mêmes règles cloud et robot}{deux implémentations qui divergent}
+    \choix{Réseau}{pas de VPC}{sécurité par l'identité}{VPC avec NAT, 30 € par mois sans gain}
+  \end{choixtable}
+\end{minipage}
+
+\difficulte{}{Un arrêt d'urgence pouvait rester sans accusé}{En coupure réseau, la file d'envoi du robot, limitée à 100 messages, pouvait se remplir et refuser l'accusé d'un arrêt d'urgence. Huit places sont désormais réservées aux messages d'arrêt, avec un test qui remplit la file. Une limite qui écarte des messages doit toujours laisser passer l'arrêt.}
+
+% ---------- Aperçu et interface ----------
+\rsection[5mm]{Aperçu et interface}
+\renewcommand{\shotzoom}{1}\renewcommand{\shotratio}{0.457}\noindent\shot{robot-page-video.png}{0.47\linewidth}{Page robot : vidéo en direct, latence de 42 ms}\hfill
+\renewcommand{\shotratio}{0.82}\renewcommand{\shotzoom}{1.8}\renewcommand{\shotfocusx}{0}\shot{14-open-major-alert.png}{0.255\linewidth}{Alerte majeure ouverte}\hfill
+\renewcommand{\shotzoom}{1}\shot{18-audit-log.png}{0.255\linewidth}{Journal d'audit filtrable}\par\vspace{1.5mm}
+\noindent\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  \begin{itemize}
+    \item Le plan du site occupe l'écran. Au repos, seuls la ligne d'état, deux KPI et le dock restent visibles.
+    \item Les pictogrammes et le design ont été validés en amont du code. On compte 9 états de robot et 8 badges qui précisent l'information, pour représenter 28 situations différentes.
+    \item Une alerte mène au robot concerné et la pause part en 3 clics.
+    \item Un état se lit par sa forme, son icône et son texte, jamais par la couleur seule. WCAG AA, clavier, français, anglais, téléphone.
+  \end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \begin{choixtable}
+    \choix{Front end}{React, TypeScript, Vite}{statique, coût nul au repos}{Next.js, un serveur sans besoin}
+    \choix{État}{Zustand, TanStack Query}{temps réel séparé du serveur}{Redux, plus de code}
+    \choix{Styles}{CSS Modules, tokens}{compatible avec la CSP}{CSS-in-JS, refusé par la CSP}
+    \choix{Tests}{Vitest, Playwright}{scénario rejoué en déployé}{mocks seuls, aveugles au déploiement}
+  \end{choixtable}
+\end{minipage}
+
+\difficulte{}{Trouver le bon niveau de simulation}{Valider l'interface demandait une flotte simulée assez crédible, mais la limite de ce qui suffisait était difficile à fixer. J'ai passé beaucoup de temps sur des trajets A*, la réservation des postes de travail et l'évitement entre robots, alors que la simulation ne faisait pas partie des objectifs. Depuis, je compare chaque ajout aux objectifs du projet et je range le reste dans une liste de bonus classés, pour que le MVP soit prêt à temps. Savoir recentrer un projet sur l'essentiel fait partie du travail.}
+
+% ---------- Recul ----------
+\rsection[5mm]{Recul}
+\noindent\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  {\mediumfont Ce que je ferais autrement}\par\vspace{0.6mm}
+  \begin{itemize}
+    \item Tester sur l'environnement déployé dès le premier jour, car le test réel a apporté la plupart des correctifs d'interface.
+    \item Utiliser une caméra d'au moins 15 images/s. Celle de la VM en donnait 1 à 3, trop peu pour mesurer la latence vidéo.
+  \end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}\vspace{0pt}
+  \fontsize{8.5}{10.3}\selectfont
+  {\mediumfont Ce qui manque avant la production}\par\vspace{0.6mm}
+  \begin{itemize}
+    \item Un robot réel en mouvement via ROS 2, derrière une sécurité matérielle.
+    \item La résolution automatique des alertes et un Data Lake pour l'analyse.
+    \item Le multi-site isolé par client, déjà prévu dans les clés de données, et un WAF.
+    \item Des lots de 5 mesures par message MQTT, soit 35 \% de coût en moins pour 5 s de fraîcheur.
+  \end{itemize}
+\end{minipage}
+\end{document}

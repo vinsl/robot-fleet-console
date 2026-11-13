@@ -1,0 +1,110 @@
+[
+  {
+    "topic": "$aws/rules/mfc_demo_telemetry/fleet/paris-01/kali-01/telemetry",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "kali-01",
+      "channel": "telemetry"
+    }
+  },
+  {
+    "topic": "$aws/rules/mfc_demo_events/fleet/paris-01/kali-01/events",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "kali-01",
+      "channel": "events"
+    }
+  },
+  {
+    "topic": "$aws/rules/mfc_demo_acks/fleet/paris-01/kali-01/cmd/ack",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "kali-01",
+      "channel": "ack"
+    }
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/telemetry",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "kali-01",
+      "channel": "telemetry"
+    }
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/cmd",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "kali-01",
+      "channel": "cmd"
+    }
+  },
+  {
+    "topic": "fleet/paris-01/sim-01/events",
+    "expected": {
+      "siteId": "paris-01",
+      "robotId": "sim-01",
+      "channel": "events"
+    }
+  },
+  {
+    "topic": "fleet/+/+/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/#",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/Kali-01/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/ka/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/telemetry/extra",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/cmd/ack/extra",
+    "expected": null
+  },
+  {
+    "topic": "fleet//kali-01/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/telemetry\n",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/telemetry?",
+    "expected": null
+  },
+  {
+    "topic": "fleet/paris-01/kali-01/cmd/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "$aws/rules/mfc_demo_events/fleet/paris-01/kali-01/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "$aws/rules/mfc_demo_telemetry/fleet/paris-01/kali-01/cmd",
+    "expected": null
+  },
+  {
+    "topic": "$aws/rules/other_rule/fleet/paris-01/kali-01/telemetry",
+    "expected": null
+  },
+  {
+    "topic": "$aws/rules/mfc_demo_telemetry/fleet/paris-01/kali-01",
+    "expected": null
+  },
+  {
+    "topic": "",
+    "expected": null
+  }
+]

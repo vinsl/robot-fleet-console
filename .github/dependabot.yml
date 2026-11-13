@@ -1,0 +1,46 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    cooldown: { default-days: 14 }
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+    # TypeScript majors change compiler behaviour across the whole monorepo; they are
+    # upgraded by hand with a dedicated change, not by a bot PR.
+    # @types/node must follow the Node.js major of the Lambda runtime (.nvmrc), not the latest
+    # release: newer typings would accept APIs that do not exist at runtime. The major
+    # is bumped by hand when the runtime changes; this rule only blocks the major bumps.
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: uv
+    directory: /agent
+    schedule: { interval: weekly, day: monday }
+    cooldown: { default-days: 14 }
+    groups:
+      python-minor-patch:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    cooldown: { default-days: 14 }
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: terraform
+    directories: ["/infra/bootstrap", "/infra/envs/demo"]
+    schedule: { interval: weekly, day: monday }
+    cooldown: { default-days: 14 }
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    cooldown: { default-days: 14 }
+  - package-ecosystem: devcontainers
+    directory: /
+    schedule: { interval: monthly }
+    cooldown: { default-days: 14 }

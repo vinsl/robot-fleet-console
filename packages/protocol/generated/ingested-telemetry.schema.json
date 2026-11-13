@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "messageId": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "robotId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{3,32}$"
+    },
+    "siteId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{3,32}$"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d{3}(?:Z))$"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "bootId": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "x": {
+      "type": "number",
+      "minimum": -1000,
+      "maximum": 1000
+    },
+    "y": {
+      "type": "number",
+      "minimum": -1000,
+      "maximum": 1000
+    },
+    "heading": {
+      "type": "number",
+      "minimum": -3.141592653589793,
+      "maximum": 3.141592653589793
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "IDLE",
+        "WORKING",
+        "MOVING",
+        "CHARGING",
+        "BLOCKED",
+        "PAUSED",
+        "TELEOP",
+        "ESTOP"
+      ]
+    },
+    "battery": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "speed": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "missionId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,64}$"
+    },
+    "errorCode": {
+      "type": "string",
+      "enum": [
+        "OBSTACLE",
+        "SENSOR_FAULT",
+        "BATTERY_LOW",
+        "LINK_LOSS"
+      ]
+    },
+    "iotClientId": {
+      "type": "string",
+      "pattern": "^mfc-demo-[a-z0-9-]{3,32}$"
+    },
+    "iotTopic": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "iotReceivedAt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "messageId",
+    "robotId",
+    "siteId",
+    "ts",
+    "seq",
+    "bootId",
+    "x",
+    "y",
+    "heading",
+    "state",
+    "battery",
+    "speed",
+    "iotClientId",
+    "iotTopic",
+    "iotReceivedAt"
+  ],
+  "additionalProperties": false
+}

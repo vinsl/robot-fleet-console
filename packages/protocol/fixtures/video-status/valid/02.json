@@ -1,0 +1,7 @@
+{
+  "state": "ESTOP",
+  "banner": "ESTOP",
+  "lockHeld": false,
+  "connected": false,
+  "simulated": false
+}

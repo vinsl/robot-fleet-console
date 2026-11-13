@@ -1,0 +1,94 @@
+% Visual style of the two-page report: Times-like serif (TeX Gyre Termes), near-black ink, no colour outside screenshots and icons.
+% Compiled with XeTeX (tectonic).
+\usepackage{fontspec}
+\setmainfont{texgyretermes}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]% metric clone of Times New Roman
+\setmonofont{texgyrecursor}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold, Scale=0.95]
+\newcommand{\lightfont}{\mdseries}
+\newcommand{\mediumfont}{\bfseries}
+
+\usepackage[a4paper,margin=14mm]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{microtype}
+\usepackage{etoolbox}
+\usepackage{xstring}
+
+\definecolor{ink}{HTML}{0A0B0D}
+\definecolor{secondary}{RGB}{255,117,92}
+\definecolor{hairline}{HTML}{0A0B0D}% rules and frames are black
+\definecolor{grey}{HTML}{6B6E73}
+\definecolor{wash}{HTML}{F3F4F5}
+\color{ink}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{6mm}
+\pagestyle{empty}
+\setlist{nosep, leftmargin=*, itemsep=0.8pt, topsep=0pt, label=\textcolor{ink}{\textbullet}}
+\linespread{1.02}
+\emergencystretch=2em
+
+% Section title in sentence case; the optional argument adds space above it.
+\newcommand{\rsection}[2][0mm]{%
+  \par\vspace{\dimexpr 4.5mm+#1\relax}%
+  {\fontsize{12}{14}\selectfont\mediumfont #2\par}%
+  \vspace{1.5mm}}
+
+% Screenshot with rounded corners; a named grey placeholder if the file is missing.
+\newsavebox{\shotbox}
+\newlength{\shotw}
+\newlength{\shoth}
+\newcommand{\shotratio}{0.52}
+\newcommand{\shotzoom}{1}
+\newcommand{\shotfocus}{0}
+\newcommand{\shotfocusx}{0.5}% 0 shows the left edge, 0.5 the centre, 1 the right edge
+\newcommand{\shot}[3]{%
+  \setlength{\shotw}{#2}%
+  \setlength{\shoth}{\shotratio\shotw}%
+  \begin{minipage}[t]{\shotw}\centering
+    \IfFileExists{images/#1}{%
+      \sbox{\shotbox}{\includegraphics[width=\shotzoom\shotw]{images/#1}}%
+      \ifdim\ht\shotbox<\shoth \sbox{\shotbox}{\includegraphics[height=\shoth]{images/#1}}\fi
+      \begin{tikzpicture}[baseline=(current bounding box.north)]
+        \useasboundingbox (0,0) rectangle (\shotw,\shoth);
+        \clip[rounded corners=2mm] (0,0) rectangle (\shotw,\shoth);
+        \node[anchor=north west, inner sep=0] at ({-\shotfocusx*(\wd\shotbox-\shotw)},{\shoth+\shotfocus*(\ht\shotbox-\shoth)}) {\usebox{\shotbox}};
+      \end{tikzpicture}%
+    }{%
+      \begin{tikzpicture}[baseline=(current bounding box.north)]
+        \fill[wash, rounded corners=2mm] (0,0) rectangle (\shotw,\shoth);
+        \node[font=\fontsize{7}{8}\selectfont\ttfamily, text=secondary] at (0.5\shotw,0.5\shoth) {\detokenize{#1}};
+      \end{tikzpicture}%
+    }\\[0.8mm]
+    {\fontsize{7}{8}\selectfont\color{secondary}#3}%
+  \end{minipage}}
+
+% Technical-choice table: domain and choice, reason, discarded alternative with the reason it was discarded.
+% The first line of the table sits on the first baseline of the bullets next to it (both blocks are top-aligned).
+\newenvironment{choixtable}{%
+  \fontsize{8}{9.4}\selectfont
+  \setlength{\tabcolsep}{2pt}%
+  \begin{tabular*}{\linewidth}[t]{@{}>{\raggedright\arraybackslash}p{0.31\linewidth}@{\extracolsep{\fill}}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}@{}}%
+  {\mediumfont Domaine et choix} & {\mediumfont Pourquoi} & {\mediumfont Alternative écartée}\\[0.2mm]
+  \arrayrulecolor{ink}\hline\noalign{\vspace{0.4mm}}}{%
+  \end{tabular*}}
+\newcommand{\choix}[4]{\textbf{#1}\newline #2 & #3 & \textcolor{secondary}{#4}\\[0.2mm]\arrayrulecolor{hairline}\hline\noalign{\vspace{0.4mm}}}
+
+% Difficulty block: a short labelled paragraph behind a thin left rule.
+\newcommand{\difficulte}[3]{%
+  \par\vspace{2.5mm}\noindent%
+  \begin{tikzpicture}[baseline=(box.north)]
+    \node[inner sep=0, text width=\dimexpr\linewidth-3mm\relax, align=justify, anchor=north west] (box) at (3mm,0) {%
+      \fontsize{8.5}{10.2}\selectfont
+      {\fontsize{8.5}{10.2}\selectfont\mediumfont Difficulté :}\hspace{1.5mm}#2\par\vspace{0.5mm}#3};
+    \draw[hairline, line width=0.8pt] ([xshift=-1.5mm]box.north west) -- ([xshift=-1.5mm]box.south west);
+  \end{tikzpicture}\par}
+
+
+\input{figures/tikzstyle}
+\usepackage[hidelinks]{hyperref}

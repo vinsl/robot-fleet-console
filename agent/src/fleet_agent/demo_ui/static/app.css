@@ -1,0 +1,265 @@
+/* Styles of the local demo page. Only the system font stack is used, and no value comes from the network. */
+:root {
+  --page-bg: #f4f5f7;
+  --card-bg: #ffffff;
+  --text: #1a1d21;
+  --muted: #4a5058;
+  --border: #c9cdd3;
+  --accent: #1a4fa0;
+  --accent-text: #ffffff;
+  --focus: #b45309;
+  --error-bg: #fde8e8;
+  --error-text: #7a1212;
+  --info-bg: #e6f0fb;
+  --info-text: #123a73;
+  --radius: 6px;
+  --gap: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--page-bg);
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  line-height: 1.4;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -40px;
+  background: var(--card-bg);
+  padding: 8px;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+.page-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+}
+
+.site {
+  margin: 0 0 var(--gap);
+  color: var(--muted);
+}
+
+.site-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+h2 {
+  margin: 0 0 var(--gap);
+  font-size: 1.15rem;
+}
+
+.heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.heading-row h2 {
+  margin-bottom: 0;
+}
+
+.banner {
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.banner-error {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+.banner-info {
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+
+.chip {
+  display: inline-block;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.step,
+.read-only,
+#auto-stop {
+  color: var(--muted);
+}
+
+.actions,
+.console-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  align-items: center;
+  margin-top: var(--gap);
+}
+
+.button {
+  font: inherit;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+}
+
+.button-secondary {
+  background: var(--card-bg);
+  color: var(--accent);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.console-url {
+  flex: 1 1 360px;
+  font: inherit;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: var(--card-bg);
+}
+
+.sr-status {
+  width: 100%;
+  margin: 0;
+  color: var(--muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+caption {
+  text-align: left;
+  color: var(--muted);
+  padding-bottom: 4px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  padding: 0 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-simulated {
+  color: var(--info-text);
+}
+
+.badge-real {
+  color: var(--error-text);
+}
+
+.plain-list {
+  list-style: none;
+  margin: 0 0 var(--gap);
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.count-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  align-items: center;
+}
+
+.count-input {
+  width: 5em;
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: inherit;
+}
+
+/* The account form reuses the count row; its fields match the count input. */
+.field-input {
+  min-width: 14em;
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: inherit;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+}
+
+.account-panel {
+  margin-top: var(--gap);
+  padding: var(--gap);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* The temporary password is selectable as one word and wraps instead of widening the card. */
+.account-password {
+  display: inline-block;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font: inherit;
+  overflow-wrap: anywhere;
+  user-select: all;
+}

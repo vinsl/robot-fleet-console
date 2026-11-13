@@ -1,0 +1,66 @@
+/*
+ * Glass group of the map controls: a column on the right edge, centred vertically. The KPI corners own both
+ * bottom corners at every width, so the controls must not sit there; the right edge keeps the corners' inset.
+ */
+.controls {
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: var(--hairline) solid var(--glass-edge);
+  border-radius: var(--radius-inner);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  pointer-events: auto;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-inner);
+  background: none;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.control:hover {
+  background: var(--secondary);
+}
+
+.control:focus-visible {
+  outline: calc(var(--hairline) * 2) solid var(--focus-ring);
+  outline-offset: var(--hairline);
+}
+
+.control[aria-pressed="true"] {
+  border-color: var(--glass-edge);
+  background: var(--glass-highlight);
+}
+
+/* Short landscape screen (a phone turned sideways, ADR 0075): the controls take half the size. */
+@media (max-height: 500px) {
+  .controls {
+    right: var(--space-2);
+    padding: calc(var(--space-1) / 2);
+  }
+
+  .control {
+    width: calc(var(--control-h) / 2);
+    height: calc(var(--control-h) / 2);
+  }
+
+  .control svg {
+    width: var(--space-3);
+    height: var(--space-3);
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "robotId": "kali-01",
+  "region": "eu-west-3",
+  "channelName": "mfc-demo-kali-01",
+  "channelArn": "arn:aws:kinesisvideo:eu-west-3:111122223333:channel/mfc-demo-kali-01/1700000000000",
+  "credentials": {
+    "accessKeyId": "ASIAIOSFODNN7EXAMPLE",
+    "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    "sessionToken": "FQoGZXIvYXdzEBYaDHjEXAMPLESESSIONTOKEN0123==",
+    "expiration": "2026-11-01T11:00:00Z"
+  }
+}

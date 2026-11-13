@@ -1,0 +1,203 @@
+{
+  "title": "Configuration du site",
+  "tabs": {
+    "label": "Sections du site",
+    "editor": "Éditeur",
+    "versions": "Versions"
+  },
+  "map": {
+    "legendLabel": "Légende de la carte",
+    "legend": {
+      "wall": "Mur",
+      "obstacle": "Obstacle",
+      "nogo": "Zone interdite",
+      "charger": "Borne de recharge",
+      "workstation": "Poste de travail"
+    }
+  },
+  "pick": {
+    "title": "Choisir le plan",
+    "hint": "Choisissez un fichier DXF exporté depuis votre outil de CAO. Il est lu dans ce navigateur et n'est jamais envoyé.",
+    "choose": "Choisir un fichier DXF",
+    "drop": "ou déposez-le ici",
+    "parsing": "Lecture du plan en cours",
+    "parsed": "Plan lu",
+    "size": "{{kb}} Ko"
+  },
+  "errors": {
+    "dxf": {
+      "too-large": "Ce fichier dépasse {{limitMb}} Mo.",
+      "binary": "Ce fichier DXF est binaire. Exportez-le en DXF ASCII depuis votre outil de CAO.",
+      "not-dxf": "Ce fichier n'est pas un plan DXF.",
+      "wrong-type": "Choisissez un fichier d'extension .dxf.",
+      "too-complex": "Ce plan est trop complexe pour être importé.",
+      "empty": "Le plan ne contient aucune entité que la console peut dessiner.",
+      "timeout": "La lecture du plan a pris trop de temps. Essayez un export plus simple."
+    },
+    "scale": "Saisissez une échelle supérieure à zéro.",
+    "generic": "Une erreur est survenue. Réessayez.",
+    "extent": "Le plan dépasse {{limitM}} m sur un axe. Vérifiez les mètres par unité.",
+    "save": {
+      "build": "Le plan ne passe pas encore le contrôle de carte. Vérifiez les éléments.",
+      "slot": "La console n'a pas pu réserver une version. Réessayez.",
+      "validate": "La carte envoyée n'a pas pu être validée. Réessayez."
+    },
+    "upload": {
+      "too-large": "La carte dépasse {{limitMb}} Mo.",
+      "rejected": "L'envoi a été refusé, peut-être parce qu'il a expiré. Enregistrez à nouveau.",
+      "network": "L'envoi a échoué à cause du réseau. Enregistrez à nouveau.",
+      "timeout": "L'envoi a pris trop de temps. Enregistrez à nouveau."
+    }
+  },
+  "mapping": {
+    "title": "Associer les calques",
+    "layer": "Calque",
+    "entities": "Entités",
+    "role": "Rôle",
+    "suggested": "suggéré",
+    "scale": "Mètres par unité",
+    "scaleHint": "L'unité du plan est le {{unit}}. Modifiez la valeur seulement si le plan n'est pas à l'échelle.",
+    "scaleMissing": "Le plan n'indique aucune unité. Saisissez le nombre de mètres d'une unité du plan.",
+    "roles": {
+      "wall": "Mur",
+      "obstacle": "Obstacle",
+      "ignore": "Ignorer"
+    },
+    "units": {
+      "1": "pouce",
+      "2": "pied",
+      "4": "millimètre",
+      "5": "centimètre",
+      "6": "mètre",
+      "7": "kilomètre",
+      "10": "yard",
+      "14": "décimètre"
+    },
+    "summary": "{{walls}} lignes de mur, {{obstacles}} obstacles, {{skipped}} lignes ouvertes ignorées comme obstacles.",
+    "preview": "Aperçu des murs et des obstacles",
+    "continue": "Continuer vers l'éditeur",
+    "back": "Retour",
+    "layersLabel": "Calques du plan"
+  },
+  "edit": {
+    "title": "Placer les éléments",
+    "toolsLabel": "Outils de l'éditeur",
+    "mapLabel": "Plan en cours d'édition",
+    "tools": {
+      "select": "Sélectionner",
+      "charger": "Borne",
+      "workstation": "Poste",
+      "nogo": "Zone interdite"
+    },
+    "hint": "Cliquez sur le plan pour placer l'outil choisi. Glissez un élément pour le déplacer, ou utilisez les flèches avec Maj pour un mètre. V, C, W et N choisissent un outil ; Suppr retire l'élément sélectionné.",
+    "panel": {
+      "title": "Éléments",
+      "addCharger": "Placer la borne",
+      "addWorkstation": "Ajouter un poste",
+      "addNogo": "Ajouter une zone interdite",
+      "remove": "Retirer",
+      "name": "Nom",
+      "workstation": "Poste {{number}}",
+      "nogo": "Zone interdite {{number}}",
+      "charger": "Borne",
+      "x": "x (m)",
+      "y": "y (m)",
+      "w": "largeur (m)",
+      "h": "hauteur (m)",
+      "empty": "Aucun élément placé.",
+      "sizeRange": "Saisissez une largeur et une hauteur entre {{min}} et {{max}} m."
+    },
+    "resizeHint": "Faites glisser une poignée pour redimensionner. Clavier : Alt+Maj+Flèche redimensionne l'élément sélectionné de 0,1 m ; Échap annule un glissement.",
+    "issues": {
+      "title": "Avant l'enregistrement",
+      "noCharger": "Placez la borne.",
+      "fewStations": "Ajoutez au moins deux postes.",
+      "badName": "Poste {{number}} : utilisez de 1 à 32 lettres minuscules, chiffres ou tirets.",
+      "duplicateName": "Le nom de poste {{name}} est utilisé deux fois.",
+      "badSize": "Le poste {{name}} doit avoir une largeur et une hauteur entre 0,1 et 50 m.",
+      "badNogo": "La zone interdite {{number}} doit avoir une largeur et une hauteur supérieures à zéro.",
+      "outside": {
+        "charger": "La borne est en dehors du plan.",
+        "workstation": "Le poste {{name}} est en dehors du plan.",
+        "nogo": "La zone interdite {{number}} est en dehors du plan."
+      },
+      "complete": "Le brouillon est complet.",
+      "protocolRefusal": "Le plan ne passe pas encore la vérification de la carte. Vérifiez les éléments."
+    },
+    "back": "Retour aux calques",
+    "item": "{{item}}, x {{x}} m, y {{y}} m",
+    "itemSized": "{{item}}, x {{x}} m, y {{y}} m, {{width}} sur {{height}} m",
+    "save": "Enregistrer comme nouvelle version",
+    "saving": "Enregistrement de la version",
+    "retryValidation": "Relancer la validation"
+  },
+  "discard": {
+    "title": "Abandonner le brouillon non enregistré ?",
+    "message": "Le plan et les éléments placés dessus ne sont pas enregistrés. Fermer la fenêtre les supprime.",
+    "keep": "Continuer la modification",
+    "confirm": "Abandonner le brouillon"
+  },
+  "profile": {
+    "name": "Nom du site",
+    "save": "Enregistrer le nom",
+    "saving": "Enregistrement du nom",
+    "saved": "Nom du site enregistré.",
+    "saveFailed": "Le nom n'a pas pu être enregistré. Réessayez.",
+    "loading": "Chargement du site.",
+    "loadFailed": "Le site n'a pas pu être chargé. Réessayez.",
+    "active": "Carte active : version {{version}}.",
+    "noActive": "Aucune carte n'est encore active.",
+    "invalidName": "Utilisez 1 à {{max}} caractères, sans chevrons ni caractères de contrôle."
+  },
+  "saved": {
+    "title": "La version {{version}} est validée",
+    "hint": "La carte est stockée et contrôlée. Activez-la pour que le planificateur l'utilise.",
+    "counts": "{{walls}} lignes de mur, {{workstations}} postes de travail, {{nogo}} zones interdites.",
+    "activate": "Activer maintenant",
+    "activating": "Activation",
+    "activated": "La version {{version}} est maintenant la carte active.",
+    "activateConflict": "La carte a changé avant l'activation. Actualisez les versions et réessayez.",
+    "activateFailed": "La carte n'a pas pu être activée. Réessayez.",
+    "viewVersions": "Voir les versions",
+    "editAnother": "Modifier un autre plan"
+  },
+  "versions": {
+    "title": "Versions de carte",
+    "loading": "Chargement des versions.",
+    "loadingPreview": "Chargement de la carte.",
+    "empty": "Aucune version de carte pour l'instant. Enregistrez un plan depuis l'éditeur pour en créer une.",
+    "none": "Aucune",
+    "number": "v{{version}}",
+    "active": "Active",
+    "preview": "Carte de la version {{version}}",
+    "view": "Voir v{{version}}",
+    "validate": "Valider v{{version}}",
+    "validating": "Validation",
+    "activate": "Activer v{{version}}",
+    "confirmActivate": "Confirmer l'activation de v{{version}}",
+    "cancelActivate": "Annuler",
+    "activated": "La version {{version}} est maintenant la carte active.",
+    "download": "Télécharger v{{version}}",
+    "counts": "{{walls}} lignes de mur, {{workstations}} postes de travail, {{nogo}} zones interdites.",
+    "status": {
+      "PENDING": "En attente",
+      "VALID": "Validée"
+    },
+    "col": {
+      "version": "Version",
+      "status": "Statut",
+      "created": "Créée le",
+      "createdBy": "Créée par",
+      "size": "Taille",
+      "counts": "Éléments",
+      "actions": "Actions"
+    },
+    "errors": {
+      "load": "Les versions n'ont pas pu être chargées. Réessayez.",
+      "validate": "La version n'a pas pu être validée. Réessayez.",
+      "download": "Le téléchargement n'a pas pu démarrer. Réessayez.",
+      "activateConflict": "La carte a changé avant l'activation. Actualisez les versions et réessayez.",
+      "activateFailed": "La carte n'a pas pu être activée. Réessayez."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "robotId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{3,32}$"
+    },
+    "siteId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{3,32}$"
+    }
+  },
+  "required": [
+    "robotId",
+    "siteId"
+  ],
+  "additionalProperties": false
+}

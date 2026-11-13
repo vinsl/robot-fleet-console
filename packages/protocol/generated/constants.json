@@ -1,0 +1,42 @@
+{
+  "BATTERY_LOW_PERCENT": 20,
+  "COMMAND_MAX_AGE_MS": 2000,
+  "COMMAND_MAX_FUTURE_SKEW_MS": 1000,
+  "CONSOLE_HEARTBEAT_INTERVAL_MS": 250,
+  "DEADMAN_TIMEOUT_MS": 1000,
+  "LOCK_FREE_COMMANDS": [
+    "ESTOP",
+    "TAKE_CONTROL",
+    "SIMULATE_FAULT"
+  ],
+  "LOCK_IDLE_EXPIRY_MS": 30000,
+  "LOCK_REQUIRED_COMMANDS": [
+    "PAUSE",
+    "RESUME",
+    "RETURN_TO_BASE",
+    "ESTOP_RELEASE",
+    "RELEASE_CONTROL",
+    "HEARTBEAT",
+    "DRIVE"
+  ],
+  "MAX_MQTT_PAYLOAD_BYTES": 4096,
+  "OFFLINE_SILENCE_MS": 15000,
+  "REAL_TELEMETRY_HZ": 2,
+  "REPLAY_LRU_SIZE": 1000,
+  "ROBOT_HEARTBEAT_INTERVAL_MS": 5000,
+  "ROBOT_POLICY_NAME": "mfc-demo-robot",
+  "ROLE_ALIAS_NAME": "mfc-demo-robot-kvs-master",
+  "RULE_NAMES": {
+    "telemetry": "mfc_demo_telemetry",
+    "events": "mfc_demo_events",
+    "acks": "mfc_demo_acks",
+    "presence": "mfc_demo_presence"
+  },
+  "SCHEMA_MAJOR": 1,
+  "SCHEMA_VERSION": "1.0.0",
+  "SIM_TELEMETRY_MOVING_HZ": 0.5,
+  "THING_NAME_PREFIX": "mfc-demo-",
+  "UNSUPPORTED_COMMANDS": [
+    "DRIVE"
+  ]
+}

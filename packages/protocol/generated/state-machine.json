@@ -1,0 +1,1274 @@
+{
+  "triggers": {
+    "command": [
+      "ESTOP",
+      "ESTOP_RELEASE",
+      "PAUSE",
+      "RESUME",
+      "RETURN_TO_BASE",
+      "TAKE_CONTROL",
+      "RELEASE_CONTROL",
+      "HEARTBEAT",
+      "SIMULATE_FAULT:OBSTACLE",
+      "SIMULATE_FAULT:SENSOR_FAULT",
+      "SIMULATE_FAULT:BATTERY_LOW",
+      "SIMULATE_FAULT:LINK_LOSS"
+    ],
+    "internal": [
+      "BOOT",
+      "MISSION_ASSIGNED",
+      "ARRIVED",
+      "WORK_DONE",
+      "CHARGED",
+      "OBSTACLE_DETECTED",
+      "SENSOR_FAULT",
+      "CAUSE_CLEARED",
+      "BATTERY_LOW",
+      "DEADMAN_EXPIRED",
+      "LOCK_EXPIRED"
+    ]
+  },
+  "rows": [
+    {
+      "from": "BLOCKED",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "CAUSE_CLEARED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "CLEAR_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "RESUME",
+      "guard": "CAUSE_CLEARED",
+      "to": "RESUME_TARGET",
+      "effects": [
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "RESUME",
+      "guard": "CAUSE_PENDING",
+      "to": "SAME",
+      "effects": [],
+      "reply": "REJECT",
+      "reason": "INVALID_STATE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER",
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "ACQUIRE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "CHARGED",
+      "guard": "ALWAYS",
+      "to": "IDLE",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "TELEOP",
+      "effects": [
+        "ACQUIRE_LOCK",
+        "STOP_MOTION",
+        "ABORT_MISSION"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "ACK"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "ESTOP_RELEASE",
+      "guard": "ESTOP_FROM_IDLE",
+      "to": "IDLE",
+      "effects": [
+        "CLEAR_ESTOP_LATCH",
+        "RESUME_TARGET_IDLE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "ESTOP_RELEASE",
+      "guard": "ESTOP_FROM_OTHER",
+      "to": "PAUSED",
+      "effects": [
+        "CLEAR_ESTOP_LATCH",
+        "RESUME_TARGET_IDLE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "ACQUIRE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "SET_DEST_CHARGER"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "MISSION_ASSIGNED",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "SET_DEST_STATION"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER",
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "TELEOP",
+      "effects": [
+        "ACQUIRE_LOCK",
+        "STOP_MOTION",
+        "ABORT_MISSION"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "ARRIVED",
+      "guard": "DEST_CHARGER",
+      "to": "CHARGING",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "ARRIVED",
+      "guard": "DEST_STATION",
+      "to": "WORKING",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "DEADMAN_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "OBSTACLE_DETECTED",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "DEST_CHARGER",
+      "to": "SAME",
+      "effects": [],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "DEST_STATION",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "SIMULATE_FAULT:OBSTACLE",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "TELEOP",
+      "effects": [
+        "ACQUIRE_LOCK",
+        "STOP_MOTION",
+        "ABORT_MISSION"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "RESUME",
+      "guard": "ALWAYS",
+      "to": "RESUME_TARGET",
+      "effects": [],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER",
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "TELEOP",
+      "effects": [
+        "ACQUIRE_LOCK",
+        "STOP_MOTION",
+        "ABORT_MISSION"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "START",
+      "trigger": "BOOT",
+      "guard": "LATCH_NOT_SET",
+      "to": "IDLE",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "START",
+      "trigger": "BOOT",
+      "guard": "LATCH_SET",
+      "to": "ESTOP",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "DEADMAN_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "RELEASE_LOCK",
+        "STOP_MOTION",
+        "RESUME_TARGET_IDLE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "OBSTACLE_DETECTED",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "RELEASE_LOCK",
+        "STOP_MOTION",
+        "RESUME_TARGET_IDLE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER",
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "SIMULATE_FAULT:OBSTACLE",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "ACQUIRE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "REQUEST_CHARGE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "DEADMAN_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "ESTOP",
+      "guard": "ALWAYS",
+      "to": "ESTOP",
+      "effects": [
+        "STOP_MOTION",
+        "ABORT_MISSION",
+        "LATCH_ESTOP",
+        "RECORD_ESTOP_ORIGIN"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "HEARTBEAT",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "LOCK_EXPIRED",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "PAUSE",
+      "guard": "ALWAYS",
+      "to": "PAUSED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "RELEASE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "RELEASE_LOCK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "RETURN_TO_BASE",
+      "guard": "ALWAYS",
+      "to": "MOVING",
+      "effects": [
+        "ABORT_MISSION",
+        "SET_DEST_CHARGER",
+        "CLEAR_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "SIMULATE_FAULT:BATTERY_LOW",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "SET_BATTERY_LOW"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "SIMULATE_FAULT:LINK_LOSS",
+      "guard": "ALWAYS",
+      "to": "SAME",
+      "effects": [
+        "DROP_LINK"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "SIMULATE_FAULT:OBSTACLE",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "SIMULATE_FAULT:SENSOR_FAULT",
+      "guard": "ALWAYS",
+      "to": "BLOCKED",
+      "effects": [
+        "STOP_MOTION",
+        "RESUME_TARGET_FROM",
+        "MARK_CAUSE"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "TAKE_CONTROL",
+      "guard": "ALWAYS",
+      "to": "TELEOP",
+      "effects": [
+        "ACQUIRE_LOCK",
+        "STOP_MOTION",
+        "ABORT_MISSION"
+      ],
+      "reply": "ACK"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "WORK_DONE",
+      "guard": "CHARGE_REQUESTED",
+      "to": "MOVING",
+      "effects": [
+        "END_MISSION",
+        "SET_DEST_CHARGER"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "WORK_DONE",
+      "guard": "MISSION_COMPLETE",
+      "to": "IDLE",
+      "effects": [
+        "END_MISSION"
+      ],
+      "reply": "NONE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "WORK_DONE",
+      "guard": "MISSION_REMAINING",
+      "to": "MOVING",
+      "effects": [
+        "SET_DEST_STATION"
+      ],
+      "reply": "NONE"
+    }
+  ],
+  "cloudRows": [
+    {
+      "from": "BLOCKED",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "BLOCKED",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "CHARGING",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "ESTOP",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "IDLE",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "MOVING",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "OFFLINE",
+      "trigger": "ROBOT_REPORTED",
+      "to": "REPORTED"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "PAUSED",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "TELEOP",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "CLOUD_DISCONNECTED",
+      "to": "OFFLINE"
+    },
+    {
+      "from": "WORKING",
+      "trigger": "CLOUD_SILENCE_15S",
+      "to": "OFFLINE"
+    }
+  ]
+}

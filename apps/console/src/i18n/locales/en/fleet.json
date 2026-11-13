@@ -1,0 +1,42 @@
+{
+  "map": {
+    "label": "Warehouse map",
+    "robotsGroup": "Robots on the map",
+    "none": "No active site map. An Admin activates one in Site.",
+    "unavailable": "The site map could not be loaded.",
+    "retry": "Retry",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset view",
+    "flat": "Flat view",
+    "controls": "Map controls",
+    "hiddenByFilter_one": "{{count}} robot hidden by the filters",
+    "hiddenByFilter_other": "{{count}} robots hidden by the filters"
+  },
+  "marker": {
+    "label": "{{robot}}, {{state}}, battery {{battery}} %",
+    "labelStale": "{{robot}}, {{state}}, battery {{battery}} %, last seen {{age}} ago"
+  },
+  "robots": {
+    "title": "Robots",
+    "search": "Search by id",
+    "filterState": "State",
+    "filterOther": "Other filters",
+    "withAlert": "With open alert",
+    "lowBattery": "Low battery",
+    "clear": "Clear filters",
+    "empty": "No robot matches the filters.",
+    "none": "No robot has reported yet.",
+    "count": "{{shown}} of {{total}} robots",
+    "col": {
+      "robot": "Robot",
+      "state": "State",
+      "battery": "Battery",
+      "lastSeen": "Last seen",
+      "alert": "Alert"
+    },
+    "open": "Open {{robot}}",
+    "noPosition": "No position yet",
+    "justNow": "now"
+  }
+}

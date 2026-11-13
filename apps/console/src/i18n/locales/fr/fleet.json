@@ -1,0 +1,42 @@
+{
+  "map": {
+    "label": "Plan de l'entrepôt",
+    "robotsGroup": "Robots sur le plan",
+    "none": "Aucun plan de site actif. Un administrateur en active un dans Site.",
+    "unavailable": "Le plan du site n'a pas pu être chargé.",
+    "retry": "Réessayer",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "reset": "Réinitialiser la vue",
+    "flat": "Vue à plat",
+    "controls": "Commandes de la carte",
+    "hiddenByFilter_one": "{{count}} robot masqué par les filtres",
+    "hiddenByFilter_other": "{{count}} robots masqués par les filtres"
+  },
+  "marker": {
+    "label": "{{robot}}, {{state}}, batterie {{battery}} %",
+    "labelStale": "{{robot}}, {{state}}, batterie {{battery}} %, vu il y a {{age}}"
+  },
+  "robots": {
+    "title": "Robots",
+    "search": "Rechercher par identifiant",
+    "filterState": "État",
+    "filterOther": "Autres filtres",
+    "withAlert": "Avec une alerte ouverte",
+    "lowBattery": "Batterie faible",
+    "clear": "Effacer les filtres",
+    "empty": "Aucun robot ne correspond aux filtres.",
+    "none": "Aucun robot n'a encore envoyé de données.",
+    "count": "{{shown}} robots sur {{total}}",
+    "col": {
+      "robot": "Robot",
+      "state": "État",
+      "battery": "Batterie",
+      "lastSeen": "Vu",
+      "alert": "Alerte"
+    },
+    "open": "Ouvrir {{robot}}",
+    "noPosition": "Pas encore de position",
+    "justNow": "à l'instant"
+  }
+}

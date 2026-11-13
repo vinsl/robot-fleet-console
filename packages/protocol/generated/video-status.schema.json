@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "state": {
+      "type": "string",
+      "enum": [
+        "IDLE",
+        "WORKING",
+        "MOVING",
+        "CHARGING",
+        "BLOCKED",
+        "PAUSED",
+        "TELEOP",
+        "ESTOP"
+      ]
+    },
+    "banner": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "ESTOP",
+        "TELEOP"
+      ]
+    },
+    "lockHeld": {
+      "type": "boolean"
+    },
+    "connected": {
+      "type": "boolean"
+    },
+    "simulated": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "state",
+    "banner",
+    "lockHeld",
+    "connected",
+    "simulated"
+  ],
+  "additionalProperties": false
+}

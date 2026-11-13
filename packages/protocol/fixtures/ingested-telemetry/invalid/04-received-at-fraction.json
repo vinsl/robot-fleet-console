@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "messageId": "0190a7c4-5b1e-7d2a-9c3f-4e5d6a7b8c9d",
+  "robotId": "kali-01",
+  "siteId": "paris-01",
+  "ts": "2026-11-01T10:00:00.000Z",
+  "seq": 42,
+  "bootId": "0190a7c4-0000-7000-8000-000000000001",
+  "state": "IDLE",
+  "x": 0,
+  "y": 0,
+  "heading": 0,
+  "battery": 50,
+  "speed": 0,
+  "iotClientId": "mfc-demo-kali-01",
+  "iotTopic": "fleet/paris-01/kali-01/telemetry",
+  "iotReceivedAt": 1.5
+}

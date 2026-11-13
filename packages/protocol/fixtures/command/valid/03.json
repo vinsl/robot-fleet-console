@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "messageId": "0190a7c5-2b00-7c00-8a00-00000000a001",
+  "robotId": "kali-01",
+  "siteId": "paris-01",
+  "ts": "2026-11-01T10:00:01.000Z",
+  "commandId": "0190a7c5-1f00-7a00-8b00-00000000c001",
+  "issuedAt": "2026-11-01T10:00:00.900Z",
+  "issuedBy": "7f3e2a10-9b4c-4d5e-8f60-1a2b3c4d5e6f",
+  "correlationId": "corr-0001-abcd",
+  "type": "TAKE_CONTROL",
+  "params": {},
+  "lockToken": "lock-token-0001-abcd"
+}
