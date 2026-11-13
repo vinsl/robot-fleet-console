@@ -1,8 +1,10 @@
-# Fleet Console
+# Robot Fleet Console
 
 A production-grade web console to supervise, teleoperate and audit a fleet of warehouse robots, with live video from
 a real robot. Serverless on AWS, built end to end with TypeScript, React, Python and Terraform: robot identity,
 real-time telemetry, safe remote control, alerts and KPIs, infrastructure as code and a DevSecOps pipeline.
+
+![Robot Fleet Console: the live fleet view](docs/social-preview.png)
 
 **Highlights**
 
